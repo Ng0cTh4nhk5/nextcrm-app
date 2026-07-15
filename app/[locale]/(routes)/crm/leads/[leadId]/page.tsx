@@ -2,7 +2,6 @@ import { getLead } from "@/actions/crm/get-lead";
 import Container from "@/app/[locale]/(routes)/components/ui/Container";
 import React from "react";
 import { BasicView } from "./components/BasicView";
-import { FindSimilarButton } from "@/components/crm/find-similar-button";
 import DocumentsView from "../../components/DocumentsView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryTab } from "./components/HistoryTab";
@@ -35,7 +34,6 @@ const LeadDetailPage = async (props: LeadDetailPageProps) => {
           <div className="space-y-5">
             <BasicView data={lead} />
             <ActivitiesSection leadId={lead.id} />
-            <FindSimilarButton entityType="lead" recordId={leadId} />
             {/*         <DocumentsView data={lead?.documents} /> */}
           </div>
         </TabsContent>

@@ -3,12 +3,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createCampaign } from "@/actions/campaigns/create-campaign";
-import { scheduleCampaign } from "@/actions/campaigns/schedule-campaign";
-import { sendCampaignNow } from "@/actions/campaigns/send-campaign-now";
 import { Step1Details } from "./Step1Details";
 import { Step2Template } from "./Step2Template";
 import { Step3Audience } from "./Step3Audience";
-import { Step4Schedule } from "./Step4Schedule";
 
 type Template = {
   id: string;
@@ -24,28 +21,15 @@ type TargetList = {
 };
 
 type FormData = {
-  // Step 1
   name?: string;
   description?: string;
   from_name?: string;
   reply_to?: string;
-  // Step 2
   template_id?: string;
   content_html?: string;
   content_json?: object;
   subject?: string;
-  // Step 3
   target_list_ids?: string[];
-  // Step 4
-  send_now?: boolean;
-  scheduled_at?: Date;
-  followUpSteps?: Array<{
-    order: number;
-    template_id: string;
-    subject: string;
-    delay_days: number;
-    send_to: "all" | "non_openers";
-  }>;
 };
 
 export function WizardShell({
@@ -71,15 +55,6 @@ export function WizardShell({
     const merged = { ...formData, ...data };
     setIsSubmitting(true);
     try {
-      const initialStep = {
-        order: 0,
-        template_id: merged.template_id!,
-        subject: merged.subject!,
-        delay_days: 0,
-        send_to: "all" as const,
-      };
-      const allSteps = [initialStep, ...(merged.followUpSteps ?? [])];
-
       const campaign = await createCampaign({
         name: merged.name!,
         description: merged.description,
@@ -87,8 +62,15 @@ export function WizardShell({
         reply_to: merged.reply_to,
         template_id: merged.template_id,
         target_list_ids: merged.target_list_ids ?? [],
-        steps: allSteps,
-        scheduled_at: merged.send_now ? undefined : merged.scheduled_at,
+        steps: [
+          {
+            order: 0,
+            template_id: merged.template_id!,
+            subject: merged.subject!,
+            delay_days: 0,
+            send_to: "all" as const,
+          },
+        ],
       });
 
       if ("error" in campaign) {
@@ -96,19 +78,14 @@ export function WizardShell({
         return;
       }
 
-      if (merged.send_now) {
-        await sendCampaignNow(campaign.id);
-      } else if (merged.scheduled_at) {
-        await scheduleCampaign(campaign.id, merged.scheduled_at);
-      }
-
+      toast.success("Campaign created as draft");
       router.push("/campaigns");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const steps = ["Details", "Template", "Audience", "Schedule"];
+  const steps = ["Details", "Template", "Audience"];
 
   return (
     <div className="flex flex-col gap-6">
@@ -157,15 +134,7 @@ export function WizardShell({
         <Step3Audience
           initialData={formData}
           targetLists={targetLists}
-          onNext={handleNext}
-          onBack={handleBack}
-        />
-      )}
-      {step === 4 && (
-        <Step4Schedule
-          initialData={formData}
-          templates={templates}
-          onSubmit={handleSubmit}
+          onNext={handleSubmit}
           onBack={handleBack}
           isSubmitting={isSubmitting}
         />

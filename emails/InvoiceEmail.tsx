@@ -24,13 +24,18 @@ export const InvoiceEmail = ({
   message,
   userLanguage,
 }: InvoiceEmailProps) => {
-  const isEn = userLanguage !== "cz";
+  const isVi = userLanguage === "vi";
+  const isEn = userLanguage === "en";
 
-  const previewText = isEn
+  const previewText = isVi
+    ? `Hóa đơn ${number}`
+    : isEn
     ? `Invoice ${number}`
     : `Faktura ${number}`;
 
-  const defaultMessage = isEn
+  const defaultMessage = isVi
+    ? "Vui lòng xem hóa đơn được đính kèm dưới dạng PDF."
+    : isEn
     ? "Please find attached your invoice as a PDF."
     : "V priloze naleznete fakturu ve formatu PDF.";
 
@@ -42,7 +47,7 @@ export const InvoiceEmail = ({
         <Body className="bg-white my-auto mx-auto font-sans">
           <Container className="border border-solid border-slate-300 rounded-md my-[40px] mx-auto p-[20px] w-[465px]">
             <Heading className="text-black text-2xl font-normal text-center p-0 my-[30px] mx-0">
-              {isEn ? `Invoice ${number}` : `Faktura ${number}`}
+              {isVi ? `Hóa đơn ${number}` : isEn ? `Invoice ${number}` : `Faktura ${number}`}
             </Heading>
             <Text className="text-black text-sm leading-[24px]">
               {message ?? defaultMessage}
@@ -50,10 +55,12 @@ export const InvoiceEmail = ({
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Section>
               <Text className="text-slate-500 text-muted-foreground text-xs leading-[24px]">
-                {isEn
+                {isVi
+                  ? "Email này được gửi từ "
+                  : isEn
                   ? "This email was sent from "
                   : "Tento e-mail byl odeslan z "}
-                <strong>{process.env.NEXT_PUBLIC_APP_NAME ?? "NextCRM"}</strong>
+                <strong>{process.env.NEXT_PUBLIC_APP_NAME ?? "CBEC"}</strong>
                 {baseUrl ? ` (${baseUrl})` : ""}
               </Text>
             </Section>

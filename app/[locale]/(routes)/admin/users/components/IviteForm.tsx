@@ -122,6 +122,7 @@ export function InviteForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="vi">Tiếng Việt</SelectItem>
                   <SelectItem value="cz">Czech</SelectItem>
                 </SelectContent>
               </Select>

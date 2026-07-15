@@ -1,7 +1,7 @@
 import Container from "@/app/[locale]/(routes)/components/ui/Container";
 
 import { BasicView } from "./components/BasicView";
-import { FindSimilarButton } from "@/components/crm/find-similar-button";
+
 
 import { getContact } from "@/actions/crm/get-contact";
 import { getOpportunitiesFullByContactId } from "@/actions/crm/get-opportunities-with-includes-by-contactId";
@@ -43,7 +43,6 @@ const ContactViewPage = async (props: any) => {
           <div className="space-y-5">
             <BasicView data={contact} />
             <ActivitiesSection contactId={contact.id} />
-            <FindSimilarButton entityType="contact" recordId={contactId} />
             <AccountsView data={accounts} crmData={crmData} />
             <OpportunitiesView data={opportunities} crmData={crmData} />
             <DocumentsView data={documents} />

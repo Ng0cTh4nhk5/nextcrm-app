@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SendEmailDialog } from "./send-email-dialog";
 import { AddPaymentDialog } from "./add-payment-dialog";
 import {
   Pencil,
@@ -45,7 +44,6 @@ export function InvoiceActions({
     "PARTIALLY_PAID",
     "OVERDUE",
   ].includes(status);
-  const canSend = ["ISSUED", "SENT"].includes(status);
 
   const handleAction = async (action: "issue" | "cancel" | "duplicate") => {
     setLoading(action);
@@ -117,12 +115,6 @@ export function InvoiceActions({
         </>
       )}
 
-      {canSend && (
-        <SendEmailDialog
-          invoiceId={invoiceId}
-          defaultEmail={accountEmail}
-        />
-      )}
 
       {canPay && (
         <AddPaymentDialog

@@ -35,9 +35,11 @@ export const UpdatedTaskFromProject = ({
   boardData,
 }: VercelInviteUserEmailProps) => {
   const previewText =
-    userLanguage === "en"
-      ? `New task from ${process.env.NEXT_PUBLIC_APP_NAME} app`
-      : `Nový úkolu z aplikace  ${process.env.NEXT_PUBLIC_APP_NAME}`;
+    userLanguage === "vi"
+      ? `Công việc được cập nhật từ hệ thống CBEC`
+      : userLanguage === "en"
+      ? `Updated task from CBEC app`
+      : `Aktualizovaný úkolu z aplikace CBEC`;
 
   return (
     <Html>
@@ -47,27 +49,33 @@ export const UpdatedTaskFromProject = ({
         <Body className="bg-white my-auto mx-auto font-sans">
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
             <Heading className="text-black text-2xl font-normal text-center p-0 my-[30px] mx-0">
-              {userLanguage === "en"
+              {userLanguage === "vi"
+                ? `Có cập nhật công việc từ Dự án - ${boardData.title}`
+                : userLanguage === "en"
                 ? `There is a updated task from Project - ${boardData.title} module`
                 : `Úkol z modulu Projekty  - ${boardData.title} - byl aktualizován`}
             </Heading>
             <Text className="text-black text-sm leading-[24px]">
-              {userLanguage === "en"
+              {userLanguage === "vi"
+                ? `Xin chào ${username},`
+                : userLanguage === "en"
                 ? `Hello ${username},`
                 : `Dobrý den ${username},`}
             </Text>
             <Text className="text-black text-sm leading-[24px]">
               <strong>{taskFromUser}</strong>
-              {userLanguage === "en"
+              {userLanguage === "vi"
+                ? ` đã cập nhật một công việc và giao nó cho bạn. `
+                : userLanguage === "en"
                 ? ` has updated a task and assigned to you. `
                 : ` aktualizoval úkol a přiřadil vás k němu. `}
             </Text>
             <Text className="text-black text-sm leading-[24px]">
-              {userLanguage === "en"
-                ? `
-              Details you can find here: `
-                : `
-              Podrobnosti najdete zde: `}
+              {userLanguage === "vi"
+                ? `Bạn có thể xem chi tiết tại đây: `
+                : userLanguage === "en"
+                ? `Details you can find here: `
+                : `Podrobnosti najdete zde: `}
 
               <strong>{`${process.env.NEXT_PUBLIC_APP_URL}/projects/tasks/viewtask/${taskData.id}`}</strong>
             </Text>
@@ -76,17 +84,21 @@ export const UpdatedTaskFromProject = ({
                 className="bg-slate-800 rounded-md text-white  py-3 px-4 text-xs font-semibold no-underline text-center"
                 href={`${process.env.NEXT_PUBLIC_APP_URL}/projects/tasks/viewtask/${taskData.id}`}
               >
-                {userLanguage === "en" ? "View task detail" : "Zobrazit úkol"}
+                {userLanguage === "vi" ? "Xem chi tiết" : userLanguage === "en" ? "View task detail" : "Zobrazit úkol"}
               </Button>
             </Section>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-xs leading-[24px]">
-              {userLanguage === "en"
+              {userLanguage === "vi"
+                ? `Tin nhắn này dành cho - `
+                : userLanguage === "en"
                 ? `This message was intended for - `
                 : `Tato zpráva  byla určeno pro - `}
               <span className="text-black">{username}</span>.
               <span className="text-black"></span>.
-              {userLanguage === "en"
+              {userLanguage === "vi"
+                ? "Nếu bạn không mong đợi tin nhắn này, bạn có thể bỏ qua email. Nếu bạn lo lắng về sự an toàn của tài khoản, vui lòng trả lời email này để liên hệ với chúng tôi."
+                : userLanguage === "en"
                 ? "If you were not expecting this message, you can ignore this email. If you are concerned about your account&apos;s safety, please reply to this email to get in touch with us."
                 : "Pokud jste tuto zprávu neočekávali, můžete tento e-mail ignorovat. Pokud se obáváte o bezpečnost svého účtu, odpovězte na tento e-mail, abyste se s námi spojili."}
             </Text>

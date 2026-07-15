@@ -1,4 +1,3 @@
-import { pauseCampaign } from "@/actions/campaigns/pause-campaign";
 import StepsTimeline from "./StepsTimeline";
 import RecipientsTable from "./RecipientsTable";
 import type { getCampaign } from "@/actions/campaigns/get-campaign";
@@ -24,7 +23,6 @@ export default function CampaignDetail({ campaign }: { campaign: CampaignWithDat
   };
   const statusColor = statusColors[campaign.status ?? "draft"] ?? "bg-gray-100 text-gray-700";
 
-  const canPause = campaign.status === "scheduled" || campaign.status === "sending";
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,21 +39,6 @@ export default function CampaignDetail({ campaign }: { campaign: CampaignWithDat
             <p className="text-muted-foreground">{campaign.description}</p>
           )}
         </div>
-        {canPause && (
-          <form
-            action={async () => {
-              "use server";
-              await pauseCampaign(campaign.id);
-            }}
-          >
-            <button
-              type="submit"
-              className="px-3 py-1.5 text-sm border rounded-md hover:bg-muted"
-            >
-              Pause
-            </button>
-          </form>
-        )}
       </div>
 
       {/* Stats row */}

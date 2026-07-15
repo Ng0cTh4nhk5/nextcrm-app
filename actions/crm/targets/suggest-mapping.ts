@@ -1,6 +1,5 @@
 "use server";
 import { getSession } from "@/lib/auth-server";
-import { openAiHelper } from "@/lib/openai";
 
 const TARGET_FIELDS = [
   "last_name",
@@ -98,44 +97,7 @@ export const suggestMapping = async (headers: string[]) => {
 
   if (!Array.isArray(headers)) return { error: "Invalid request" };
 
-  const userId = (session.user as any).id;
-  const openai = await openAiHelper(userId);
-
-  if (openai) {
-    try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a data mapping assistant. Given a list of CSV column headers and a list of CRM field names, return a JSON object mapping each CSV header to the best matching CRM field, or null if no match. Only use the provided CRM field names as values. Return only valid JSON, no explanation.",
-          },
-          {
-            role: "user",
-            content: `CSV headers: ${JSON.stringify(headers)}\n\nCRM fields: ${JSON.stringify(TARGET_FIELDS)}\n\nReturn a JSON object like: { "CSV Header": "crm_field" or null }`,
-          },
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0,
-      });
-
-      const content = completion.choices[0]?.message?.content;
-      if (content) {
-        const parsed = JSON.parse(content);
-        const mapping: Record<string, string | null> = {};
-        for (const header of headers) {
-          const suggested = parsed[header];
-          mapping[header] = suggested && TARGET_FIELDS.includes(suggested) ? suggested : null;
-        }
-        return { mapping };
-      }
-    } catch (err) {
-      console.error("OpenAI mapping failed, falling back to fuzzy match", err);
-    }
-  }
-
-  // Fallback: fuzzy match
+  // AI-powered mapping removed — use fuzzy match only
   const mapping: Record<string, string | null> = {};
   for (const header of headers) {
     mapping[header] = fuzzyMatch(header);

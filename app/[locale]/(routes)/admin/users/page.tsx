@@ -1,16 +1,15 @@
 import { getUsers } from "@/actions/get-users";
 import React from "react";
 import Container from "../../components/ui/Container";
-import { InviteForm } from "./components/IviteForm";
+import { CreateUserForm } from "./components/CreateUserForm";
 import { Separator } from "@/components/ui/separator";
 
 import { getSession } from "@/lib/auth-server";
 import { AdminUserDataTable } from "./table-components/data-table";
 import { columns } from "./table-components/columns";
 import { Users } from "@prisma/client";
-import { Button } from "@/components/ui/button";
-import SendMailToAll from "./components/send-mail-to-all";
 import { getTranslations } from "next-intl/server";
+
 
 const AdminUsersPage = async () => {
   const users: Users[] = await getUsers();
@@ -37,14 +36,10 @@ const AdminUsersPage = async () => {
       description={t("users.description")}
     >
       <div className="flex-col1">
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-          {t("users.inviteHeading")}
+        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-5">
+          Tạo user mới
         </h4>
-        <InviteForm />
-      </div>
-      <Separator />
-      <div>
-        <SendMailToAll />
+        <CreateUserForm />
       </div>
       <Separator />
 

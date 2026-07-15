@@ -2,7 +2,6 @@
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import sendEmail from "@/lib/sendmail";
 import { inngest } from "@/inngest/client";
 import { writeAuditLog } from "@/lib/audit-log";
 
@@ -61,26 +60,6 @@ export const createContact = async (data: {
       } as any,
     });
 
-    if (assigned_to && assigned_to !== userId) {
-      const notifyRecipient = await prismadb.users.findFirst({
-        where: { id: assigned_to },
-      });
-
-      if (notifyRecipient) {
-        await sendEmail({
-          from: process.env.EMAIL_FROM as string,
-          to: notifyRecipient.email || "info@softbase.cz",
-          subject:
-            notifyRecipient.userLanguage === "en"
-              ? `New contact ${data.first_name} ${data.last_name} has been added to the system and assigned to you.`
-              : `Nový kontakt ${data.first_name} ${data.last_name} byla přidána do systému a přidělena vám.`,
-          text:
-            notifyRecipient.userLanguage === "en"
-              ? `New contact ${data.first_name} ${data.last_name} has been added to the system and assigned to you. You can click here for detail: ${process.env.NEXT_PUBLIC_APP_URL}/crm/contacts/${contact.id}`
-              : `Nový kontakt ${data.first_name} ${data.last_name} byla přidán do systému a přidělena vám. Detaily naleznete zde: ${process.env.NEXT_PUBLIC_APP_URL}/crm/contact/${contact.id}`,
-        });
-      }
-    }
 
     await writeAuditLog({
       entityType: "contact",

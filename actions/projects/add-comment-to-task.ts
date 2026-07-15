@@ -3,8 +3,6 @@ import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { junctionTableHelpers } from "@/lib/junction-helpers";
 import { revalidatePath } from "next/cache";
-import NewTaskCommentEmail from "@/emails/NewTaskComment";
-import resendHelper from "@/lib/resend";
 import {
   requireAuthenticated,
   assertCanWriteBoard,
@@ -78,65 +76,6 @@ export const addCommentToTask = async (data: {
           user: session.user.id,
         },
       });
-
-      // Send email to all board watchers except the commenter
-      try {
-        let resend;
-        try {
-          resend = await resendHelper();
-        } catch {
-          resend = null;
-        }
-
-        if (resend) {
-          const boardWatchers = await prismadb.boardWatchers.findMany({
-            where: {
-              board_id: section.board,
-              user_id: { not: session.user.id },
-            },
-            include: { user: true },
-          });
-
-          const emailRecipients = boardWatchers.map(
-            (w: (typeof boardWatchers)[number]) => w.user
-          );
-
-          // Also add task creator if different from commenter
-          if (task.createdBy) {
-            const taskCreator = await prismadb.users.findUnique({
-              where: { id: task.createdBy },
-            });
-            if (taskCreator && taskCreator.id !== session.user.id) {
-              emailRecipients.push(taskCreator);
-            }
-          }
-
-          for (const user of emailRecipients) {
-            await resend.emails.send({
-              from:
-                process.env.NEXT_PUBLIC_APP_NAME +
-                " <" +
-                process.env.EMAIL_FROM +
-                ">",
-              to: user?.email!,
-              subject:
-                session.user.userLanguage === "en"
-                  ? `New comment on task ${task.title}.`
-                  : `Nový komentář k úkolu ${task.title}.`,
-              text: "",
-              react: NewTaskCommentEmail({
-                commentFromUser: session.user.name!,
-                username: user?.name!,
-                userLanguage: user?.userLanguage!,
-                taskId: task.id,
-                comment,
-              }),
-            });
-          }
-        }
-      } catch (emailError) {
-        console.log("[ADD_COMMENT_EMAIL]", emailError);
-      }
 
       revalidatePath("/[locale]/(routes)/projects", "page");
       return { data: newComment };
