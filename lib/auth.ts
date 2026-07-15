@@ -69,6 +69,17 @@ export const auth = betterAuth({
   plugins: [
     emailOTP({
       sendVerificationOTP: async ({ email, otp, type }) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.log(`\n========================================\n[DEV ONLY] OTP for ${email} is: ${otp}\n========================================\n`);
+          try {
+            const fs = require("fs");
+            const path = require("path");
+            fs.writeFileSync(path.join(process.cwd(), "public", "otp.txt"), otp, "utf8");
+          } catch (e) {
+            console.error("Failed to write OTP to file:", e);
+          }
+        }
+
         try {
           const resend = await resendHelper();
           await resend.emails.send({
@@ -86,6 +97,7 @@ export const auth = betterAuth({
           }
         }
       },
+
     }),
     // testUtils captures OTPs for E2E testing — only enabled in non-production
     ...(process.env.NODE_ENV !== "production"

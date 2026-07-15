@@ -4,15 +4,18 @@ const withNextIntl = require("next-intl/plugin")(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   serverExternalPackages: ["pdf-parse", "pdfjs-dist"],
   images: {
     remotePatterns: [
+      // Local development
+      { protocol: "http", hostname: "localhost" },
       { protocol: "https", hostname: "localhost" },
-      { protocol: "https", hostname: "res.cloudinary.com" },
+      // Google (avatars OAuth)
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
-      { protocol: "https", hostname: "minio-cwg0o4ss0scoccgwso8sk004.coolify.cz" },
-      { protocol: "http", hostname: "minio" },
+      // Cloudinary (nếu có dùng)
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      // Supabase Storage (thay MinIO)
+      { protocol: "https", hostname: "bysnemsdhbjeezkqppwp.supabase.co" },
     ],
   },
   async redirects() {

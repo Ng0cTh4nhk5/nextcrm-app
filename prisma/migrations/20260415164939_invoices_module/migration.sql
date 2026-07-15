@@ -1,5 +1,11 @@
+-- DropLegacyTables
+DROP TABLE IF EXISTS "DocumentsToInvoices" CASCADE;
+DROP TABLE IF EXISTS "Invoices" CASCADE;
+DROP TABLE IF EXISTS "invoice_States" CASCADE;
+
 -- CreateEnum
 CREATE TYPE "Invoice_Status" AS ENUM ('DRAFT', 'ISSUED', 'SENT', 'PARTIALLY_PAID', 'PAID', 'OVERDUE', 'CANCELLED', 'DISPUTED', 'REFUNDED', 'WRITTEN_OFF');
+
 
 -- CreateEnum
 CREATE TYPE "Invoice_Type" AS ENUM ('INVOICE', 'CREDIT_NOTE', 'PROFORMA');
