@@ -51,6 +51,8 @@ migration-errors.log
 
 # backups
 backups/
+*.bck
+*.backup
 
 #Agents
 .claude/

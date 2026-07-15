@@ -66,12 +66,9 @@ const ResendCard = async () => {
           <p>ENV API key:</p>
           <p>
             {process.env.RESEND_API_KEY ? (
-              <CopyKeyComponent
-                keyValue={process.env.RESEND_API_KEY}
-                message="Resend - API Key"
-              />
+              <span className="text-green-600 font-medium">✓ Đã cấu hình qua biến môi trường</span>
             ) : (
-              "not enabled"
+              <span className="text-red-500">✗ Chưa cấu hình (RESEND_API_KEY trống)</span>
             )}
           </p>
           <p>API key from DB:</p>

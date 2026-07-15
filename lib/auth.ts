@@ -79,9 +79,13 @@ export const auth = betterAuth({
   callbacks: {
     async onUserCreated(user: { id: string }) {
       // Người dùng đầu tiên được tạo → tự động thành admin và kích hoạt
-      // (Áp dụng cho cả: lần seed đầu tiên hoặc fresh install)
-      const count = await prismadb.users.count();
-      if (count === 1) {
+      // Dùng findFirst thay vì count() để tránh race condition
+      // (nếu nhiều user được tạo cùng lúc, count() có thể trả về sai)
+      const firstUser = await prismadb.users.findFirst({
+        orderBy: { created_on: "asc" },
+        select: { id: true },
+      });
+      if (firstUser?.id === user.id) {
         await prismadb.users.update({
           where: { id: user.id },
           data: { role: "admin", userStatus: "ACTIVE" },
