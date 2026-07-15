@@ -37,7 +37,7 @@ const AdminUsersPage = async () => {
     >
       <div className="flex-col1">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-5">
-          Tạo user mới
+          {t("createUser.formHeading")}
         </h4>
         <CreateUserForm />
       </div>

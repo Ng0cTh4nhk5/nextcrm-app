@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import AlertModal from "@/components/modals/alert-modal";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Copy, Eye, EyeOff, KeyRound, MoreHorizontal, Shield, Trash, UserCheck, UserX } from "lucide-react";
 import { deleteUser } from "@/actions/admin/users/delete-user";
@@ -46,6 +47,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const data = adminUserSchema.parse(row.original);
+  const t = useTranslations("AdminPage.userActions");
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -58,7 +60,7 @@ export function DataTableRowActions<TData>({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Đã sao chép ID.");
+    toast.success(t("copyIdSuccess"));
   };
 
   const onDelete = async () => {
@@ -70,9 +72,9 @@ export function DataTableRowActions<TData>({
         return;
       }
       router.refresh();
-      toast.success("Đã xóa user.");
+      toast.success(t("deleteSuccess"));
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi xóa user. Vui lòng thử lại.");
+      toast.error(t("deleteError"));
     } finally {
       setLoading(false);
       setOpen(false);
@@ -88,9 +90,9 @@ export function DataTableRowActions<TData>({
         return;
       }
       router.refresh();
-      toast.success("Đã kích hoạt user.");
+      toast.success(t("activateSuccess"));
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi kích hoạt user. Vui lòng thử lại.");
+      toast.error(t("activateError"));
     } finally {
       setLoading(false);
     }
@@ -105,9 +107,9 @@ export function DataTableRowActions<TData>({
         return;
       }
       router.refresh();
-      toast.success("Đã vô hiệu hóa user.");
+      toast.success(t("deactivateSuccess"));
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi vô hiệu hóa user. Vui lòng thử lại.");
+      toast.error(t("deactivateError"));
     } finally {
       setLoading(false);
     }
@@ -122,9 +124,9 @@ export function DataTableRowActions<TData>({
         return;
       }
       router.refresh();
-      toast.success(`Đã đổi quyền thành ${role}.`);
+      toast.success(t("changeRoleSuccess", { role: t(`roles.${role}`) }));
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi đổi quyền. Vui lòng thử lại.");
+      toast.error(t("changeRoleError"));
     } finally {
       setLoading(false);
     }
@@ -132,7 +134,7 @@ export function DataTableRowActions<TData>({
 
   const onResetPassword = async () => {
     if (!newPassword || newPassword.length < 8) {
-      toast.error("Mật khẩu phải ít nhất 8 ký tự.");
+      toast.error(t("passwordMinLength"));
       return;
     }
     try {
@@ -142,11 +144,11 @@ export function DataTableRowActions<TData>({
         toast.error(result.error);
         return;
       }
-      toast.success("Đã đặt lại mật khẩu thành công.");
+      toast.success(t("resetPasswordSuccess"));
       setResetOpen(false);
       setNewPassword("");
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi đặt lại mật khẩu. Vui lòng thử lại.");
+      toast.error(t("resetPasswordError"));
     } finally {
       setResetLoading(false);
     }
@@ -166,19 +168,22 @@ export function DataTableRowActions<TData>({
       <Dialog open={resetOpen} onOpenChange={(v) => { setResetOpen(v); if (!v) setNewPassword(""); }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Đặt lại mật khẩu</DialogTitle>
+            <DialogTitle>{t("resetPasswordTitle")}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-3 py-2">
             <p className="text-sm text-muted-foreground">
-              Đặt mật khẩu mới cho <strong>{data.name || data.email}</strong>
+              {t.rich("resetPasswordDescription", {
+                name: data.name || data.email,
+                strong: (chunks) => <strong>{chunks}</strong>
+              })}
             </p>
             <div className="grid gap-1.5">
-              <Label htmlFor="new-password">Mật khẩu mới</Label>
+              <Label htmlFor="new-password">{t("newPasswordLabel")}</Label>
               <div className="relative">
                 <Input
                   id="new-password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Ít nhất 8 ký tự"
+                  placeholder={t("passwordMinHint")}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   disabled={resetLoading}
@@ -198,10 +203,10 @@ export function DataTableRowActions<TData>({
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setResetOpen(false)} disabled={resetLoading}>
-              Hủy
+              {t("cancel")}
             </Button>
             <Button onClick={onResetPassword} disabled={resetLoading || newPassword.length < 8}>
-              {resetLoading ? "Đang lưu..." : "Lưu mật khẩu"}
+              {resetLoading ? t("saving") : t("savePassword")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -210,52 +215,52 @@ export function DataTableRowActions<TData>({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={"ghost"} className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actionsTitle")}</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => onCopy(data?.id)}>
             <Copy className="mr-2 w-4 h-4" />
-            Copy ID
+            {t("copyId")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => onActivate()}>
             <UserCheck className="mr-2 w-4 h-4" />
-            Activate
+            {t("activate")}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onDeactivate()}>
             <UserX className="mr-2 w-4 h-4" />
-            Deactivate
+            {t("deactivate")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setResetOpen(true)}>
             <KeyRound className="mr-2 w-4 h-4" />
-            Đặt lại mật khẩu
+            {t("resetPassword")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <Shield className="mr-2 w-4 h-4" />
-              Set Role
+              {t("setRole")}
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
               <DropdownMenuItem onClick={() => onSetRole("admin")}>
-                Admin
+                {t("roles.admin")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onSetRole("manager")}>
-                Manager
+                {t("roles.manager")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onSetRole("user")}>
-                User
+                {t("roles.user")}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 w-4 h-4" />
-            Delete
+            {t("delete")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

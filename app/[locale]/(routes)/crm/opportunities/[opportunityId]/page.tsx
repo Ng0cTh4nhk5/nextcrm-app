@@ -18,6 +18,7 @@ import { serializeDecimalsList } from "@/lib/serialize-decimals";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryTab } from "./components/HistoryTab";
 import { ActivitiesSection } from "./components/ActivitiesSection";
+import { getTranslations } from "next-intl/server";
 
 const OpportunityView = async (
   props: {
@@ -53,17 +54,20 @@ const OpportunityView = async (
     ? serializeDecimalsList(opportunity.lineItems as any[])
     : [];
 
-  if (!opportunity) return <div>Opportunity not found</div>;
+  const t = await getTranslations("CrmPage");
+  const tCommon = await getTranslations("Common");
+
+  if (!opportunity) return <div>{t("opportunities.notFound")}</div>;
 
   return (
     <Container
-      title={`Opportunity ${opportunity.name} - detail view`}
-      description={"Description - " + opportunity.description}
+      title={t("opportunities.detailTitle", { name: opportunity.name || "" })}
+      description={t("opportunities.descriptionPrefix") + (opportunity.description || "")}
     >
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="overview">{tCommon("overview")}</TabsTrigger>
+          <TabsTrigger value="history">{tCommon("history")}</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-5">

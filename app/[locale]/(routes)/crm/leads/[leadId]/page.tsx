@@ -6,6 +6,7 @@ import DocumentsView from "../../components/DocumentsView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HistoryTab } from "./components/HistoryTab";
 import { ActivitiesSection } from "./components/ActivitiesSection";
+import { getTranslations } from "next-intl/server";
 
 interface LeadDetailPageProps {
   params: Promise<{
@@ -17,18 +18,22 @@ const LeadDetailPage = async (props: LeadDetailPageProps) => {
   const params = await props.params;
   const { leadId } = params;
   const lead: any = await getLead(leadId);
+  const t = await getTranslations("CrmPage");
+  const tCommon = await getTranslations("Common");
 
-  if (!lead) return <div>Lead not found</div>;
+  if (!lead) return <div>{t("leads.notFound")}</div>;
+
+  const leadName = `${lead?.firstName || ""} ${lead?.lastName || ""}`.trim();
 
   return (
     <Container
-      title={`Lead: ${lead?.firstName} ${lead?.lastName}`}
-      description={"Everything you need to know about sales potential"}
+      title={t("leads.detailTitle", { name: leadName })}
+      description={tCommon("salesPotentialDescription")}
     >
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="overview">{tCommon("overview")}</TabsTrigger>
+          <TabsTrigger value="history">{tCommon("history")}</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-5">

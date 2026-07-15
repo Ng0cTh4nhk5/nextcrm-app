@@ -61,6 +61,9 @@ const AccountDetailPage = async (props: AccountDetailPageProps) => {
   const tasks: crm_Accounts_Tasks[] = await getAccountsTasks(accountId);
   const invoices = await getInvoicesByAccountId(accountId);
   const t = await getTranslations("InvoicesPage");
+  const tCrm = await getTranslations("CrmPage");
+  const tCommon = await getTranslations("Common");
+
   const invoiceStatusLabels: Record<string, string> = {
     DRAFT: t("status.DRAFT"),
     ISSUED: t("status.ISSUED"),
@@ -92,17 +95,17 @@ const AccountDetailPage = async (props: AccountDetailPageProps) => {
     .filter((p) => p.status === "ACTIVE")
     .map((p) => ({ id: p.id, name: p.name, currency: p.currency }));
 
-  if (!account) return <div>Account not found</div>;
+  if (!account) return <div>{tCrm("accounts.notFound")}</div>;
 
   return (
     <Container
-      title={`Account: ${account?.name}`}
-      description={"Everything you need to know about sales potential"}
+      title={tCrm("accounts.detailTitle", { name: account?.name || "" })}
+      description={tCommon("salesPotentialDescription")}
     >
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="overview">{tCommon("overview")}</TabsTrigger>
+          <TabsTrigger value="history">{tCommon("history")}</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-5">

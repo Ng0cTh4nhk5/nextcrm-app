@@ -9,6 +9,7 @@ import { BasicView } from "./components/BasicView";
 import { AccountsTab } from "./components/AccountsTab";
 import { HistoryTab } from "./components/HistoryTab";
 import { EditProductButton } from "./components/EditProductButton";
+import { getTranslations } from "next-intl/server";
 
 interface ProductDetailPageProps {
   params: Promise<{ productId: string }>;
@@ -24,7 +25,9 @@ const ProductPage = async (props: ProductDetailPageProps) => {
     getAllCrmData(),
   ]);
 
-  if (!product) return <div>Product not found</div>;
+  const t = await getTranslations("CrmPage");
+
+  if (!product) return <div>{t("products.notFound")}</div>;
 
   // Serialize decimal values for client components
   const serializedProduct = serializeDecimals(product);
@@ -59,8 +62,8 @@ const ProductPage = async (props: ProductDetailPageProps) => {
 
   return (
     <Container
-      title={`Product: ${product.name}`}
-      description={`Status: ${product.status}`}
+      title={t("products.detailTitle", { name: product.name })}
+      description={t("products.statusPrefix", { status: product.status })}
     >
       <div className="flex justify-end mb-4">
         <EditProductButton
@@ -71,11 +74,11 @@ const ProductPage = async (props: ProductDetailPageProps) => {
       </div>
       <Tabs defaultValue="basic">
         <TabsList>
-          <TabsTrigger value="basic">Basic</TabsTrigger>
+          <TabsTrigger value="basic">{t("products.basic")}</TabsTrigger>
           <TabsTrigger value="accounts">
-            Accounts ({serializedAssignments.length})
+            {t("products.accounts", { count: serializedAssignments.length })}
           </TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="history">{t("products.history")}</TabsTrigger>
         </TabsList>
         <TabsContent value="basic">
           <BasicView

@@ -8,6 +8,7 @@ import { HistoryTab } from "./components/HistoryTab";
 import { BasicView } from "./components/BasicView";
 import { ActivitiesSection } from "./components/ActivitiesSection";
 import LineItemsSection from "./components/LineItemsSection";
+import { getTranslations } from "next-intl/server";
 
 interface ContractDetailPageProps {
   params: Promise<{ contractId: string }>;
@@ -22,7 +23,10 @@ const ContractPage = async (props: ContractDetailPageProps) => {
     getAllCrmData(),
   ]);
 
-  if (!contract) return <div>Contract not found</div>;
+  const t = await getTranslations("CrmPage");
+  const tCommon = await getTranslations("Common");
+
+  if (!contract) return <div>{t("contracts.notFound")}</div>;
 
   const activeProducts = allProducts
     .filter((p: any) => p.status === "ACTIVE")
@@ -47,13 +51,13 @@ const ContractPage = async (props: ContractDetailPageProps) => {
 
   return (
     <Container
-      title={`Contract: ${contract.title}`}
-      description={`Status: ${contract.status}`}
+      title={t("contracts.detailTitle", { title: contract.title })}
+      description={t("contracts.statusPrefix", { status: contract.status })}
     >
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger value="overview">{tCommon("overview")}</TabsTrigger>
+          <TabsTrigger value="history">{tCommon("history")}</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-5">

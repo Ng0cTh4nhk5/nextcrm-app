@@ -27,19 +27,21 @@ import { useRouter } from "next/navigation";
 import { Icons } from "@/components/ui/icons";
 import { createUserByAdmin } from "@/actions/admin/users/create-user";
 import { Eye, EyeOff } from "lucide-react";
-
-const FormSchema = z.object({
-  name: z.string().min(3, "Tên ít nhất 3 ký tự").max(50),
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string().min(8, "Mật khẩu ít nhất 8 ký tự"),
-  role: z.enum(["admin", "manager", "user"]),
-  language: z.string().min(2),
-});
+import { useTranslations } from "next-intl";
 
 export function CreateUserForm() {
+  const t = useTranslations("AdminPage");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  const FormSchema = z.object({
+    name: z.string().min(3, t("createUser.validation.nameMin")).max(50),
+    email: z.string().email(t("createUser.validation.emailInvalid")),
+    password: z.string().min(8, t("createUser.validation.passwordMin")),
+    role: z.enum(["admin", "manager", "user"]),
+    language: z.string().min(2),
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -60,12 +62,12 @@ export function CreateUserForm() {
       if (result.error) {
         toast.error(result.error);
       } else {
-        toast.success(`Tạo user "${data.name}" thành công!`);
+        toast.success(t("createUser.createSuccess", { name: data.name }));
         form.reset();
         router.refresh();
       }
     } catch (error) {
-      toast.error("Có lỗi xảy ra khi tạo user.");
+      toast.error(t("createUser.createError"));
     } finally {
       setIsLoading(false);
     }
@@ -83,9 +85,9 @@ export function CreateUserForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Họ tên</FormLabel>
+              <FormLabel>{t("createUser.fullName")}</FormLabel>
               <FormControl>
-                <Input disabled={isLoading} placeholder="Nguyễn Văn A" {...field} />
+                <Input disabled={isLoading} placeholder={t("createUser.fullNamePlaceholder")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,7 +100,7 @@ export function CreateUserForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t("createUser.email")}</FormLabel>
               <FormControl>
                 <Input
                   disabled={isLoading}
@@ -118,7 +120,7 @@ export function CreateUserForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mật khẩu</FormLabel>
+              <FormLabel>{t("createUser.password")}</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -153,17 +155,17 @@ export function CreateUserForm() {
           name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phân quyền</FormLabel>
+              <FormLabel>{t("createUser.role")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Chọn quyền" />
+                    <SelectValue placeholder={t("createUser.selectRole")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="user">User</SelectItem>
+                  <SelectItem value="admin">{t("createUser.roleAdmin")}</SelectItem>
+                  <SelectItem value="manager">{t("createUser.roleManager")}</SelectItem>
+                  <SelectItem value="user">{t("createUser.roleUser")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -177,11 +179,11 @@ export function CreateUserForm() {
           name="language"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Ngôn ngữ</FormLabel>
+              <FormLabel>{t("createUser.language")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Chọn ngôn ngữ" />
+                    <SelectValue placeholder={t("createUser.selectLanguage")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -201,7 +203,7 @@ export function CreateUserForm() {
             {isLoading ? (
               <Icons.spinner className="animate-spin mr-2 h-4 w-4" />
             ) : null}
-            {isLoading ? "Đang tạo..." : "Tạo user"}
+            {isLoading ? t("createUser.creating") : t("createUser.createButton")}
           </Button>
         </div>
       </form>

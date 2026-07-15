@@ -71,7 +71,10 @@
     "low": "Thấp",
     "medium": "Trung bình",
     "high": "Cao",
-    "critical": "Nghiêm trọng"
+    "critical": "Nghiêm trọng",
+    "overview": "Tổng quan",
+    "history": "Lịch sử",
+    "salesPotentialDescription": "Tất cả những gì bạn cần biết về tiềm năng bán hàng"
   },
   "LanguageSelector": {
     "english": "Tiếng Anh",
@@ -97,7 +100,9 @@
       "addNew": "Thêm công ty mới",
       "sheetTitle": "Tạo công ty mới",
       "sheetDescription": "Thêm một công ty hoặc tổ chức mới vào hệ thống CRM.",
-      "empty": "Không tìm thấy công ty nào"
+      "empty": "Không tìm thấy công ty nào",
+      "notFound": "Không tìm thấy công ty",
+      "detailTitle": "Công ty: {name}"
     },
     "contacts": {
       "pageTitle": "Liên hệ",
@@ -106,7 +111,9 @@
       "addNew": "Thêm liên hệ mới",
       "sheetTitle": "Tạo liên hệ mới",
       "sheetDescription": "Thêm liên hệ mới vào hệ thống CRM.",
-      "empty": "Không tìm thấy liên hệ nào"
+      "empty": "Không tìm thấy liên hệ nào",
+      "notFound": "Không tìm thấy liên hệ",
+      "detailTitle": "Chi tiết liên hệ: {name}"
     },
     "opportunities": {
       "pageTitle": "Cơ hội",
@@ -115,7 +122,10 @@
       "addNew": "Thêm cơ hội mới",
       "sheetTitle": "Tạo cơ hội mới",
       "sheetDescription": "Tạo một cơ hội bán hàng mới",
-      "empty": "Không tìm thấy cơ hội nào"
+      "empty": "Không tìm thấy cơ hội nào",
+      "notFound": "Không tìm thấy cơ hội",
+      "detailTitle": "Chi tiết cơ hội: {name}",
+      "descriptionPrefix": "Mô tả - "
     },
     "leads": {
       "pageTitle": "Khách hàng tiềm năng",
@@ -124,7 +134,9 @@
       "addNew": "Thêm khách hàng",
       "sheetTitle": "Tạo khách hàng tiềm năng",
       "sheetDescription": "Điền thông tin để tạo mới",
-      "empty": "Không tìm thấy khách hàng nào"
+      "empty": "Không tìm thấy khách hàng nào",
+      "notFound": "Không tìm thấy khách hàng tiềm năng",
+      "detailTitle": "Khách hàng tiềm năng: {name}"
     },
     "contracts": {
       "pageTitle": "Hợp đồng",
@@ -133,7 +145,20 @@
       "addNew": "Thêm hợp đồng mới",
       "sheetTitle": "Tạo hợp đồng mới",
       "sheetDescription": "Điền thông tin hợp đồng",
-      "empty": "Không tìm thấy hợp đồng nào"
+      "empty": "Không tìm thấy hợp đồng nào",
+      "notFound": "Không tìm thấy hợp đồng",
+      "detailTitle": "Hợp đồng: {title}",
+      "statusPrefix": "Trạng thái: {status}"
+    },
+    "products": {
+      "pageTitle": "Sản phẩm",
+      "pageDescription": "Quản lý sản phẩm của bạn",
+      "notFound": "Không tìm thấy sản phẩm",
+      "detailTitle": "Sản phẩm: {name}",
+      "statusPrefix": "Trạng thái: {status}",
+      "basic": "Cơ bản",
+      "accounts": "Công ty ({count})",
+      "history": "Lịch sử"
     }
   },
   "CrmAccountForm": {
@@ -298,6 +323,9 @@
       "language": "Ngôn ngữ",
       "openai": "Tích hợp OpenAI",
       "apiTokens": "Mã API"
+    },
+    "hero": {
+      "role": "Quản trị viên"
     }
   },
   "ProfileForm": {
@@ -346,7 +374,13 @@
       "success": "Thành công",
       "invited": "Đã mời người dùng thành công",
       "error": "Lỗi",
-      "errorDesc": "Đã có lỗi xảy ra. Vui lòng thử lại."
+      "errorDesc": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+      "language": "Ngôn ngữ",
+      "selectLanguage": "Chọn ngôn ngữ",
+      "inviteButton": "Mời người dùng",
+      "validation": {
+        "languageRequired": "Vui lòng chọn ngôn ngữ người dùng."
+      }
     },
     "sendMail": {
       "trigger": "Gửi mail cho tất cả",
@@ -356,6 +390,110 @@
       "message": "Nội dung",
       "sendButton": "Gửi",
       "sent": "Gửi email thành công"
+    },
+    "createUser": {
+      "formHeading": "Tạo user mới",
+      "fullName": "Họ tên",
+      "fullNamePlaceholder": "Nguyễn Văn A",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "role": "Phân quyền",
+      "selectRole": "Chọn quyền",
+      "roleAdmin": "Admin",
+      "roleManager": "Quản lý",
+      "roleUser": "Người dùng",
+      "language": "Ngôn ngữ",
+      "selectLanguage": "Chọn ngôn ngữ",
+      "creating": "Đang tạo...",
+      "createButton": "Tạo user",
+      "createSuccess": "Tạo user \"{name}\" thành công!",
+      "createError": "Có lỗi xảy ra khi tạo user.",
+      "validation": {
+        "nameMin": "Tên ít nhất 3 ký tự",
+        "emailInvalid": "Email không hợp lệ",
+        "passwordMin": "Mật khẩu ít nhất 8 ký tự"
+      }
+    },
+    "userActions": {
+      "copyIdSuccess": "Đã sao chép ID.",
+      "deleteSuccess": "Đã xóa user.",
+      "deleteError": "Có lỗi xảy ra khi xóa user. Vui lòng thử lại.",
+      "activateSuccess": "Đã kích hoạt user.",
+      "activateError": "Có lỗi xảy ra khi kích hoạt user. Vui lòng thử lại.",
+      "deactivateSuccess": "Đã vô hiệu hóa user.",
+      "deactivateError": "Có lỗi xảy ra khi vô hiệu hóa user. Vui lòng thử lại.",
+      "changeRoleSuccess": "Đã đổi quyền thành {role}.",
+      "changeRoleError": "Có lỗi xảy ra khi đổi quyền. Vui lòng thử lại.",
+      "passwordMinLength": "Mật khẩu phải ít nhất 8 ký tự.",
+      "resetPasswordSuccess": "Đã đặt lại mật khẩu thành công.",
+      "resetPasswordError": "Có lỗi xảy ra khi đặt lại mật khẩu. Vui lòng thử lại.",
+      "resetPasswordTitle": "Đặt lại mật khẩu",
+      "resetPasswordDescription": "Đặt mật khẩu mới cho <strong>{name}</strong>",
+      "newPasswordLabel": "Mật khẩu mới",
+      "passwordMinHint": "Ít nhất 8 ký tự",
+      "cancel": "Hủy",
+      "savePassword": "Lưu mật khẩu",
+      "saving": "Đang lưu...",
+      "openMenu": "Mở menu",
+      "actionsTitle": "Thao tác",
+      "copyId": "Sao chép ID",
+      "activate": "Kích hoạt",
+      "deactivate": "Vô hiệu hóa",
+      "resetPassword": "Đặt lại mật khẩu",
+      "setRole": "Phân quyền",
+      "delete": "Xóa",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Quản lý",
+        "user": "Người dùng"
+      }
+    },
+    "usersTable": {
+      "noResults": "Không có kết quả.",
+      "columns": {
+        "createdOn": "Ngày tạo",
+        "lastLogin": "Lần đăng nhập cuối",
+        "name": "Họ tên",
+        "email": "E-mail",
+        "role": "Quyền",
+        "status": "Trạng thái",
+        "language": "Ngôn ngữ"
+      },
+      "statuses": {
+        "active": "Hoạt động",
+        "inactive": "Không hoạt động",
+        "pending": "Đang chờ"
+      },
+      "languages": {
+        "en": "Tiếng Anh",
+        "vi": "Tiếng Việt"
+      },
+      "pagination": {
+        "rowsPerPage": "Số hàng mỗi trang",
+        "selectedOf": "Đã chọn {selected} trong số {total} hàng.",
+        "pageOf": "Trang {page} / {pages}",
+        "firstPage": "Về trang đầu",
+        "prevPage": "Trang trước",
+        "nextPage": "Trang sau",
+        "lastPage": "Đến trang cuối"
+      },
+      "toolbar": {
+        "filterEmail": "Lọc email...",
+        "filterUsers": "Lọc người dùng...",
+        "reset": "Đặt lại",
+        "toggleColumns": "Hiển thị cột",
+        "view": "Hiển thị"
+      },
+      "columnHeader": {
+        "asc": "Tăng dần",
+        "desc": "Giảm dần",
+        "hide": "Ẩn cột"
+      },
+      "facetedFilter": {
+        "selected": "được chọn",
+        "noResults": "Không tìm thấy kết quả.",
+        "clearFilters": "Xóa bộ lọc"
+      }
     }
   },
   "ProjectsPage": {
@@ -731,5 +869,63 @@
     "dashboard": "Bảng điều khiển",
     "profileSettings": "Cài đặt hồ sơ",
     "logout": "Đăng xuất"
+  },
+  "CampaignsPage": {
+    "title": "Chiến dịch",
+    "description": "Quản lý chiến dịch email",
+    "newCampaign": "Chiến dịch mới",
+    "createCampaignDescription": "Tạo một chiến dịch email mới",
+    "templates": {
+      "title": "Mẫu chiến dịch",
+      "description": "Các mẫu email có thể tái sử dụng"
+    },
+    "targets": {
+      "title": "Mục tiêu",
+      "description": "Quản lý mục tiêu tiếp thị và bán hàng của bạn",
+      "notFound": "Không tìm thấy mục tiêu",
+      "detailTitle": "Chi tiết mục tiêu: {name}",
+      "detailDescription": "Tất cả những gì bạn cần biết về mục tiêu này"
+    },
+    "targetLists": {
+      "title": "Danh sách mục tiêu",
+      "description": "Quản lý danh sách mục tiêu cho các chiến dịch",
+      "notFound": "Không tìm thấy danh sách mục tiêu",
+      "detailTitle": "Danh sách mục tiêu: {name}",
+      "detailDescription": "Xem và quản lý các mục tiêu trong danh sách này"
+    }
+  },
+  "CrmDashboardPage": {
+    "title": "Bảng điều khiển CRM",
+    "description": "Đang phát triển. Sau khi thành phần này hoàn thành, dữ liệu sẽ tự động cập nhật.",
+    "callsOverview": "Tổng quan cuộc gọi",
+    "tasksInAccounts": "Công việc trong tài khoản",
+    "meetingsOverview": "Tổng quan cuộc họp",
+    "leadsOverview": "Tổng quan khách hàng tiềm năng",
+    "titleUserId": "{name} | Bảng điều khiển CRM (đang thực hiện)",
+    "descriptionUserId": "Dữ liệu bán hàng của bạn ở một nơi"
+  },
+  "CrmUserDashboard": {
+    "title": "{name} — Bảng điều khiển của tôi",
+    "description": "Tổng quan CRM cá nhân của bạn",
+    "totalTasks": "Tổng công việc",
+    "openTasks": "Công việc đang mở",
+    "myLeads": "Khách hàng của tôi",
+    "activeOpportunities": "Cơ hội đang hoạt động",
+    "myTasksCardTitle": "Công việc của tôi",
+    "noTasksAssigned": "Không có công việc nào được giao.",
+    "myOpportunitiesCardTitle": "Cơ hội của tôi",
+    "noOpportunitiesAssigned": "Không có cơ hội nào được giao.",
+    "noLeadsAssigned": "Không có khách hàng tiềm năng nào được giao.",
+    "table": {
+      "title": "Tiêu đề",
+      "priority": "Độ ưu tiên",
+      "status": "Trạng thái",
+      "name": "Tên",
+      "stage": "Giai đoạn",
+      "budget": "Ngân sách",
+      "company": "Công ty",
+      "email": "Email",
+      "source": "Nguồn"
+    }
   }
 }
