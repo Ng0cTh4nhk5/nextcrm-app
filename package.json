@@ -133,5 +133,21 @@
     "typescript": "^5.9.3",
     "mongodb": "^7.1.0",
     "@types/mongodb": "^4.0.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/engines",
+      "@swc/core",
+      "aws-crt",
+      "canvas",
+      "esbuild",
+      "msgpackr-extract",
+      "msw",
+      "prisma",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
