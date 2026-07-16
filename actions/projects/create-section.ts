@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import {
@@ -45,7 +45,7 @@ export const createSection = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { data: newSection };
   } catch (error) {
     console.log("[CREATE_SECTION]", error);

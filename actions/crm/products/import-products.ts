@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import Papa from "papaparse";
 import { writeAuditLog } from "@/lib/audit-log";
@@ -163,6 +163,6 @@ export async function importProducts(
     });
   }
 
-  revalidatePath("/[locale]/(routes)/crm/products", "page");
+  revalidatePath("/", "layout");
   return { imported: valid.length, skipped: errors.length, errors };
 }

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -14,7 +14,7 @@ export const deleteTarget = async (targetId: string) => {
       where: { id: targetId },
       data: { deletedAt: new Date(), deletedBy: session.user.id },
     });
-    revalidatePath("/[locale]/(routes)/crm/targets", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     return { error: "Failed to delete target" };

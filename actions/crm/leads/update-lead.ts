@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -80,7 +80,7 @@ export const updateLead = async (data: {
       userId: session.user.id,
     });
     void inngest.send({ name: "crm/lead.saved", data: { record_id: lead.id } });
-    revalidatePath("/[locale]/(routes)/crm/leads", "page");
+    revalidatePath("/", "layout");
     return { data: lead };
   } catch (error) {
     console.log("[UPDATE_LEAD]", error);

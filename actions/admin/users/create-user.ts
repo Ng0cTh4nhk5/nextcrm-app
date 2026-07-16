@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 
 import { auth } from "@/lib/auth";
 import { prismadb } from "@/lib/prisma";
@@ -73,7 +73,7 @@ export const createUserByAdmin = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/admin/users", "page");
+    revalidatePath("/", "layout");
     return { data: { id: result.user.id, name, email, role } };
   } catch (error: any) {
     console.error("[CREATE_USER_BY_ADMIN]", error);

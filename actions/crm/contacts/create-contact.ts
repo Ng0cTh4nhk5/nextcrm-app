@@ -69,7 +69,7 @@ export const createContact = async (data: {
       userId: session.user.id,
     });
     void inngest.send({ name: "crm/contact.saved", data: { record_id: contact.id } });
-    revalidatePath("/[locale]/crm/contacts", "page");
+    revalidatePath("/", "layout");
     return { data: contact };
   } catch (error) {
     console.log("[CREATE_CONTACT]", error);

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -21,7 +21,7 @@ export const deleteAccount = async (accountId: string) => {
       changes: null,
       userId: session.user.id,
     });
-    revalidatePath("/[locale]/(routes)/crm/accounts", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[DELETE_ACCOUNT]", error);

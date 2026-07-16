@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { junctionTableHelpers } from "@/lib/junction-helpers";
@@ -77,7 +77,7 @@ export const addCommentToTask = async (data: {
         },
       });
 
-      revalidatePath("/[locale]/(routes)/projects", "page");
+      revalidatePath("/", "layout");
       return { data: newComment };
     } else {
       // Task from CRM module (no section board)
@@ -90,7 +90,7 @@ export const addCommentToTask = async (data: {
         },
       });
 
-      revalidatePath("/[locale]/(routes)/projects", "page");
+      revalidatePath("/", "layout");
       return { data: newComment };
     }
   } catch (error) {

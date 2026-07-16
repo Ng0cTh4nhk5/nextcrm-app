@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { writeAuditLog } from "@/lib/audit-log";
@@ -85,7 +85,7 @@ export const copyLineItemsFromOpportunity = async (
       userId,
     });
 
-    revalidatePath("/[locale]/(routes)/crm/contracts/[contractId]", "page");
+    revalidatePath("/", "layout");
     return { data: { copied: sourceItems.length } };
   } catch (error) {
     console.log("[COPY_LINE_ITEMS_FROM_OPPORTUNITY]", error);

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import {
   requireAuthenticated,
@@ -45,8 +45,8 @@ export const removeAssignment = async (id: string) => {
 
     await writeAuditLog({ entityType: "account_product", entityId: id, action: "cancelled", changes: null, userId: user.id });
 
-    revalidatePath("/[locale]/(routes)/crm/accounts/[accountId]", "page");
-    revalidatePath("/[locale]/(routes)/crm/products/[productId]", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/", "layout");
     return { data: { id: assignment.id } };
   } catch (error) {
     console.log("[REMOVE_ASSIGNMENT]", error);

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -36,7 +36,7 @@ export const createTask = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/crm/accounts", "page");
+    revalidatePath("/", "layout");
     return { data: task };
   } catch (error) {
     console.log("[CREATE_TASK]", error);

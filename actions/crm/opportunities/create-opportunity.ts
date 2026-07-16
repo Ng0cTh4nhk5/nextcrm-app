@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -78,7 +78,7 @@ export const createOpportunity = async (data: {
       userId: session.user.id,
     });
     void inngest.send({ name: "crm/opportunity.saved", data: { record_id: opportunity.id } });
-    revalidatePath("/[locale]/(routes)/crm/opportunities", "page");
+    revalidatePath("/", "layout");
     return { data: opportunity };
   } catch (error) {
     console.log("[CREATE_OPPORTUNITY]", error);

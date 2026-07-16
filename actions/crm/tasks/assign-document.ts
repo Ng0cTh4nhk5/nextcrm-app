@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -28,7 +28,7 @@ export const assignDocumentToCrmTask = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/crm", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[ASSIGN_DOCUMENT_TO_CRM_TASK]", error);
@@ -63,7 +63,7 @@ export const disconnectDocumentFromCrmTask = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/crm", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[DISCONNECT_DOCUMENT_FROM_CRM_TASK]", error);

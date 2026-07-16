@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -22,8 +22,8 @@ export const restoreContact = async (contactId: string) => {
       changes: null,
       userId: session.user.id,
     });
-    revalidatePath("/[locale]/(routes)/crm/contacts", "page");
-    revalidatePath("/[locale]/(routes)/admin/audit-log", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[RESTORE_CONTACT]", error);

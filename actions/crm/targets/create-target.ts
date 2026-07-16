@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -29,7 +29,7 @@ export const createTarget = async (data: {
     const target = await prismadb.crm_Targets.create({
       data: { last_name: last_name ?? "", email, mobile_phone, ...rest, created_by: (session.user as any).id },
     });
-    revalidatePath("/[locale]/(routes)/crm/targets", "page");
+    revalidatePath("/", "layout");
     return { data: target };
   } catch (error) {
     return { error: "Failed to create target" };

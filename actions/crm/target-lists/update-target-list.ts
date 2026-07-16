@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -22,7 +22,7 @@ export const updateTargetList = async (data: {
       where: { id },
       data: { name, description, status },
     });
-    revalidatePath("/[locale]/(routes)/crm/target-lists", "page");
+    revalidatePath("/", "layout");
     return { data: list };
   } catch (error) {
     return { error: "Failed to update target list" };

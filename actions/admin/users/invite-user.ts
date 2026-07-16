@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Language } from "@prisma/client";
@@ -60,7 +60,7 @@ export const inviteUser = async (data: {
       return { error: "User not created" };
     }
 
-    revalidatePath("/[locale]/(routes)/admin", "page");
+    revalidatePath("/", "layout");
     return { data: user };
   } catch (error) {
     console.log("[INVITE_USER]", error);

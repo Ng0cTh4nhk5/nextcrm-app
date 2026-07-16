@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { CreateProduct } from "./schema";
 import { InputType, ReturnType } from "./types";
@@ -63,7 +63,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       userId,
     });
 
-    revalidatePath("/[locale]/(routes)/crm/products", "page");
+    revalidatePath("/", "layout");
     return { data: { id: product.id, name: product.name } };
   } catch (error) {
     console.log("[CREATE_PRODUCT]", error);

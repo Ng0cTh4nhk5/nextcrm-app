@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import {
   requireAuthenticated,
@@ -77,8 +77,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     await writeAuditLog({ entityType: "account_product", entityId: assignment.id, action: "created", changes: null, userId });
 
-    revalidatePath("/[locale]/(routes)/crm/accounts/[accountId]", "page");
-    revalidatePath("/[locale]/(routes)/crm/products/[productId]", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/", "layout");
     return { data: { id: assignment.id } };
   } catch (error) {
     console.log("[ASSIGN_PRODUCT]", error);

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -26,7 +26,7 @@ export const setLanguage = async (data: {
       data: { userLanguage: language as Language },
       where: { id: userId },
     });
-    revalidatePath("/[locale]/(routes)/profile", "page");
+    revalidatePath("/", "layout");
     return { language };
   } catch (error) {
     console.log("[SET_LANGUAGE]", error);

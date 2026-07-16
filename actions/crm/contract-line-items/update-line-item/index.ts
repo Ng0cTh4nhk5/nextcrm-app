@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { UpdateContractLineItem } from "./schema";
@@ -67,7 +67,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       userId,
     });
 
-    revalidatePath("/[locale]/(routes)/crm/contracts/[contractId]", "page");
+    revalidatePath("/", "layout");
     return { data: { id: lineItem.id } };
   } catch (error) {
     console.log("[UPDATE_CONTRACT_LINE_ITEM]", error);

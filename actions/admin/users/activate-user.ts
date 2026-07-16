@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import {
@@ -24,7 +24,7 @@ export const activateUser = async (userId: string) => {
       data: { userStatus: "ACTIVE" },
     });
 
-    revalidatePath("/[locale]/(routes)/admin", "page");
+    revalidatePath("/", "layout");
     return { data: user };
   } catch (error) {
     console.log("[ACTIVATE_USER]", error);

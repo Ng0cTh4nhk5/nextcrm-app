@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -67,7 +67,7 @@ export const createTaskInBoard = async (data: {
         data: { updatedAt: new Date() },
       });
 
-      revalidatePath("/[locale]/(routes)/projects", "page");
+      revalidatePath("/", "layout");
       return { success: true };
     } catch (error) {
       console.log("[CREATE_TASK_IN_BOARD_QUICK]", error);
@@ -102,7 +102,7 @@ export const createTaskInBoard = async (data: {
       data: { updatedAt: new Date() },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[CREATE_TASK_IN_BOARD]", error);

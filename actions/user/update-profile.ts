@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -26,7 +26,7 @@ export const updateProfile = async (data: {
       data: { name, username, account_name },
       where: { id: userId },
     });
-    revalidatePath("/[locale]/(routes)/profile", "page");
+    revalidatePath("/", "layout");
     return { data: user };
   } catch (error) {
     console.log("[UPDATE_PROFILE]", error);
