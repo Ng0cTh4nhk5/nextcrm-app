@@ -15,13 +15,12 @@ import {
 
 describe("report types and helpers", () => {
   describe("REPORT_CATEGORIES", () => {
-    it("contains all 6 categories", () => {
+    it("contains all 5 categories", () => {
       expect(REPORT_CATEGORIES).toEqual([
         "sales",
         "leads",
         "accounts",
         "activity",
-        "campaigns",
         "users",
       ]);
     });

@@ -4,7 +4,9 @@ import { getTranslations } from "next-intl/server";
 import { ProfilePhotoForm } from "../ProfilePhotoForm";
 import { ProfileForm } from "../ProfileForm";
 
-type Props = { data: Users };
+import { getUser } from "@/actions/get-user";
+
+type Props = { data: NonNullable<Awaited<ReturnType<typeof getUser>>> };
 
 export async function ProfileTabContent({ data }: Props) {
   const t = await getTranslations("ProfilePage");

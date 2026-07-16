@@ -1,8 +1,8 @@
-﻿"use server";
+"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { inngest } from "@/inngest/client";
+
 import { writeAuditLog } from "@/lib/audit-log";
 import { getSnapshotRate, getDefaultCurrency } from "@/lib/currency";
 
@@ -10,7 +10,6 @@ export const createOpportunity = async (data: {
   account?: string;
   assigned_to?: string;
   budget?: string;
-  campaign?: string;
   close_date?: Date;
   contact?: string;
   currency?: string;
@@ -29,7 +28,6 @@ export const createOpportunity = async (data: {
     account,
     assigned_to,
     budget,
-    campaign,
     close_date,
     contact,
     currency,
@@ -51,7 +49,6 @@ export const createOpportunity = async (data: {
         account: account || undefined,
         assigned_to: assigned_to || userId,
         budget: budget ? parseFloat(budget) : undefined,
-        campaign: campaign || undefined,
         close_date,
         contact: contact || undefined,
         createdBy: userId,
@@ -77,7 +74,7 @@ export const createOpportunity = async (data: {
       changes: null,
       userId: session.user.id,
     });
-    void inngest.send({ name: "crm/opportunity.saved", data: { record_id: opportunity.id } });
+
     revalidatePath("/", "layout");
     return { data: opportunity };
   } catch (error) {

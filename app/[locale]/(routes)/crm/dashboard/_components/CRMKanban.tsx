@@ -217,7 +217,7 @@ const CRMKanban = ({
   const origStageIdRef = useRef<string | null>(null);
   const isDraggingRef = useRef(false);
 
-  const { accounts, contacts, saleTypes, saleStages, campaigns, currencies } = crmData;
+  const { accounts, contacts, saleTypes, saleStages, currencies } = crmData;
 
   // Sync from server (e.g. after onThumbsDown router.refresh()) — only when not dragging
   useEffect(() => {
@@ -373,7 +373,6 @@ const CRMKanban = ({
             contacts={contacts}
             salesType={saleTypes}
             saleStages={saleStages}
-            campaigns={campaigns}
             currencies={(currencies ?? []).map((c: any) => ({ code: c.code, name: c.name, symbol: c.symbol }))}
             selectedStage={selectedStage}
             onDialogClose={() => setIsDialogOpen(false)}

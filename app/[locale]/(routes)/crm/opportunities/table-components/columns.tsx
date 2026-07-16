@@ -19,7 +19,6 @@ type ConfigItem = { id: string; name: string };
 export type OpportunityConfig = {
   saleTypes: ConfigItem[];
   saleStages: ConfigItem[];
-  campaigns: ConfigItem[];
   currencies: { code: string; name: string; symbol: string }[];
   displayCurrency?: string;
   exchangeRates?: Rate[];

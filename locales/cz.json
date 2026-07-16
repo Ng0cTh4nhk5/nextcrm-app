@@ -42,7 +42,8 @@
     "storage": "Úložiště",
     "invoices": "Faktury",
     "campaigns": "Kampaně",
-    "targets": "Cíle"
+    "targets": "Cíle",
+    "contracts": "Contracts"
   },
   "RegisterComponent": {
     "cardTitle": "Vytvořit nový účet",
@@ -73,7 +74,10 @@
     "low": "Nízká",
     "medium": "Střední",
     "high": "Vysoká",
-    "critical": "Kritická"
+    "critical": "Kritická",
+    "overview": "Overview",
+    "history": "History",
+    "salesPotentialDescription": "Everything you need to know about sales potential"
   },
   "LanguageSelector": {
     "english": "Angličtina",
@@ -99,7 +103,9 @@
       "addNew": "Přidat novou firmu",
       "sheetTitle": "Vytvořit novou firmu",
       "sheetDescription": "Přidejte novou firmu nebo organizaci do vašeho CRM systému.",
-      "empty": "Nebyly nalezeny žádné přiřazené firmy"
+      "empty": "Nebyly nalezeny žádné přiřazené firmy",
+      "notFound": "Account not found",
+      "detailTitle": "Account: {name}"
     },
     "contacts": {
       "pageTitle": "Kontakty",
@@ -108,7 +114,9 @@
       "addNew": "Přidat nový kontakt",
       "sheetTitle": "Vytvořit nový kontakt",
       "sheetDescription": "Přidejte nový kontakt do vašeho CRM systému.",
-      "empty": "Nebyly nalezeny žádné přiřazené kontakty"
+      "empty": "Nebyly nalezeny žádné přiřazené kontakty",
+      "notFound": "Contact not found",
+      "detailTitle": "Contact detail view: {name}"
     },
     "opportunities": {
       "pageTitle": "Obchody",
@@ -117,7 +125,10 @@
       "addNew": "Přidat novou příležitost",
       "sheetTitle": "Vytvořit novou příležitost",
       "sheetDescription": "Vytvořte novou obchodní příležitost s informacemi o firmě, kontaktu a obchodu",
-      "empty": "Nebyly nalezeny žádné přiřazené příležitosti"
+      "empty": "Nebyly nalezeny žádné přiřazené příležitosti",
+      "notFound": "Opportunity not found",
+      "detailTitle": "Opportunity {name} - detail view",
+      "descriptionPrefix": "Description - "
     },
     "leads": {
       "pageTitle": "Leady",
@@ -126,7 +137,9 @@
       "addNew": "Přidat nový lead",
       "sheetTitle": "Vytvořit nový lead",
       "sheetDescription": "Vyplňte údaje pro vytvoření nového leadu",
-      "empty": "Nebyly nalezeny žádné přiřazené leady"
+      "empty": "Nebyly nalezeny žádné přiřazené leady",
+      "notFound": "Lead not found",
+      "detailTitle": "Lead: {name}"
     },
     "contracts": {
       "pageTitle": "Smlouvy",
@@ -135,7 +148,20 @@
       "addNew": "Přidat novou smlouvu",
       "sheetTitle": "Vytvořit novou smlouvu",
       "sheetDescription": "Vyplňte údaje pro vytvoření nové smlouvy",
-      "empty": "Nebyly nalezeny žádné přiřazené smlouvy"
+      "empty": "Nebyly nalezeny žádné přiřazené smlouvy",
+      "notFound": "Contract not found",
+      "detailTitle": "Contract: {title}",
+      "statusPrefix": "Status: {status}"
+    },
+    "products": {
+      "pageTitle": "Products",
+      "pageDescription": "Manage your products",
+      "notFound": "Product not found",
+      "detailTitle": "Product: {name}",
+      "statusPrefix": "Status: {status}",
+      "basic": "Basic",
+      "accounts": "Accounts ({count})",
+      "history": "History"
     }
   },
   "CrmAccountForm": {
@@ -283,7 +309,26 @@
       "emails": "Email Accounts",
       "emailsDesc": "Manage your connected IMAP mailboxes",
       "llms": "LLMs",
-      "llmsDesc": "Spravujte své klíče LLM API"
+      "llmsDesc": "Spravujte své klíče LLM API",
+      "profile": "Profile",
+      "security": "Security",
+      "preferences": "Preferences",
+      "developer": "Developer",
+      "profileDesc": "Update your photo and personal details",
+      "securityDesc": "Manage your password and account security",
+      "preferencesDesc": "Customize your language and display settings",
+      "developerDesc": "Manage API keys and developer integrations"
+    },
+    "cards": {
+      "photo": "Profile Photo",
+      "personalInfo": "Personal Information",
+      "changePassword": "Change Password",
+      "language": "Language",
+      "openai": "OpenAI Integration",
+      "apiTokens": "API Tokens"
+    },
+    "hero": {
+      "role": "Admin"
     }
   },
   "ProfileForm": {
@@ -332,7 +377,13 @@
       "success": "Úspěch",
       "invited": "Uživatel úspěšně pozván",
       "error": "Chyba",
-      "errorDesc": "Něco se pokazilo. Zkuste to prosím znovu."
+      "errorDesc": "Něco se pokazilo. Zkuste to prosím znovu.",
+      "language": "Language",
+      "selectLanguage": "Select a user language",
+      "inviteButton": "Invite user",
+      "validation": {
+        "languageRequired": "Please select a user language."
+      }
     },
     "sendMail": {
       "trigger": "Odeslat e-mail všem",
@@ -342,6 +393,110 @@
       "message": "Zpráva",
       "sendButton": "Odeslat",
       "sent": "E-mail úspěšně odeslán"
+    },
+    "createUser": {
+      "formHeading": "Create new user",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "selectRole": "Select role",
+      "roleAdmin": "Admin",
+      "roleManager": "Manager",
+      "roleUser": "User",
+      "language": "Language",
+      "selectLanguage": "Select language",
+      "creating": "Creating...",
+      "createButton": "Create user",
+      "createSuccess": "User \"{name}\" created successfully!",
+      "createError": "An error occurred while creating the user.",
+      "validation": {
+        "nameMin": "Name must be at least 3 characters",
+        "emailInvalid": "Invalid email address",
+        "passwordMin": "Password must be at least 8 characters"
+      }
+    },
+    "userActions": {
+      "copyIdSuccess": "ID copied.",
+      "deleteSuccess": "User deleted successfully.",
+      "deleteError": "An error occurred while deleting the user. Please try again.",
+      "activateSuccess": "User activated successfully.",
+      "activateError": "An error occurred while activating the user. Please try again.",
+      "deactivateSuccess": "User deactivated successfully.",
+      "deactivateError": "An error occurred while deactivating the user. Please try again.",
+      "changeRoleSuccess": "Role changed to {role}.",
+      "changeRoleError": "An error occurred while changing the role. Please try again.",
+      "passwordMinLength": "Password must be at least 8 characters.",
+      "resetPasswordSuccess": "Password reset successfully.",
+      "resetPasswordError": "An error occurred while resetting the password. Please try again.",
+      "resetPasswordTitle": "Reset Password",
+      "resetPasswordDescription": "Set a new password for <strong>{name}</strong>",
+      "newPasswordLabel": "New password",
+      "passwordMinHint": "At least 8 characters",
+      "cancel": "Cancel",
+      "savePassword": "Save password",
+      "saving": "Saving...",
+      "openMenu": "Open menu",
+      "actionsTitle": "Actions",
+      "copyId": "Copy ID",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "resetPassword": "Reset password",
+      "setRole": "Set Role",
+      "delete": "Delete",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "user": "User"
+      }
+    },
+    "usersTable": {
+      "noResults": "No results.",
+      "columns": {
+        "createdOn": "Date created",
+        "lastLogin": "Last login",
+        "name": "Name",
+        "email": "E-mail",
+        "role": "Role",
+        "status": "Status",
+        "language": "Language"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending"
+      },
+      "languages": {
+        "en": "English",
+        "vi": "Vietnamese"
+      },
+      "pagination": {
+        "rowsPerPage": "Rows per page",
+        "selectedOf": "{selected} of {total} row(s) selected.",
+        "pageOf": "Page {page} of {pages}",
+        "firstPage": "Go to first page",
+        "prevPage": "Go to previous page",
+        "nextPage": "Go to next page",
+        "lastPage": "Go to last page"
+      },
+      "toolbar": {
+        "filterEmail": "Filter email...",
+        "filterUsers": "Filter Users...",
+        "reset": "Reset",
+        "toggleColumns": "Toggle columns",
+        "view": "View"
+      },
+      "columnHeader": {
+        "asc": "Asc",
+        "desc": "Desc",
+        "hide": "Hide"
+      },
+      "facetedFilter": {
+        "selected": "selected",
+        "noResults": "No results found.",
+        "clearFilters": "Clear filters"
+      }
     }
   },
   "ProjectsPage": {
@@ -717,5 +872,63 @@
     "dashboard": "Přehled",
     "profileSettings": "Nastavení profilu",
     "logout": "Odhlásit se"
+  },
+  "CampaignsPage": {
+    "title": "Campaigns",
+    "description": "Manage your email campaigns",
+    "newCampaign": "New Campaign",
+    "createCampaignDescription": "Create an email campaign",
+    "templates": {
+      "title": "Campaign Templates",
+      "description": "Reusable email templates"
+    },
+    "targets": {
+      "title": "Targets",
+      "description": "Manage your marketing and sales targets",
+      "notFound": "Target not found",
+      "detailTitle": "Target detail view: {name}",
+      "detailDescription": "Everything you need to know about this target"
+    },
+    "targetLists": {
+      "title": "Target Lists",
+      "description": "Manage your target lists for campaigns and outreach",
+      "notFound": "Target list not found",
+      "detailTitle": "Target List: {name}",
+      "detailDescription": "View and manage targets in this list"
+    }
+  },
+  "CrmDashboardPage": {
+    "title": "CRM Dashboard",
+    "description": "In development. After this compoment is finished, there will be a optimistic update of the data.",
+    "callsOverview": "Calls overview",
+    "tasksInAccounts": "Tasks in Accounts",
+    "meetingsOverview": "Meetings overview",
+    "leadsOverview": "Leads overview",
+    "titleUserId": "{name} | CRM Dashboard (in-progress)",
+    "descriptionUserId": "Your sales data in one place"
+  },
+  "CrmUserDashboard": {
+    "title": "{name} — My Dashboard",
+    "description": "Your personal CRM overview",
+    "totalTasks": "Total Tasks",
+    "openTasks": "Open Tasks",
+    "myLeads": "My Leads",
+    "activeOpportunities": "Active Opportunities",
+    "myTasksCardTitle": "My Tasks",
+    "noTasksAssigned": "No tasks assigned.",
+    "myOpportunitiesCardTitle": "My Opportunities",
+    "noOpportunitiesAssigned": "No opportunities assigned.",
+    "noLeadsAssigned": "No leads assigned.",
+    "table": {
+      "title": "Title",
+      "priority": "Priority",
+      "status": "Status",
+      "name": "Name",
+      "stage": "Stage",
+      "budget": "Budget",
+      "company": "Company",
+      "email": "Email",
+      "source": "Source"
+    }
   }
 }

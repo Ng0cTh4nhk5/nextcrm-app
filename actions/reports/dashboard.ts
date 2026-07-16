@@ -45,8 +45,6 @@ export async function getDashboardKPIs(
     tasksPrev,
     tasksOpenCurr,
     tasksOpenPrev,
-    campaignsCurr,
-    campaignsPrev,
     accountsCurr,
     accountsPrev,
     contractsCurr,
@@ -111,13 +109,6 @@ export async function getDashboardKPIs(
     }),
     prismadb.tasks.count({
       where: { createdAt: { gte: prev.dateFrom, lte: prev.dateTo }, taskStatus: "ACTIVE", ...scope.task },
-    }),
-    // campaignsSent (sends have no direct scope; manager/admin = no-op)
-    prismadb.crm_campaign_sends.count({
-      where: { sent_at: { gte: filters.dateFrom, lte: filters.dateTo } },
-    }),
-    prismadb.crm_campaign_sends.count({
-      where: { sent_at: { gte: prev.dateFrom, lte: prev.dateTo } },
     }),
     // newAccounts
     prismadb.crm_Accounts.count({
@@ -214,14 +205,6 @@ export async function getDashboardKPIs(
       changePercent: calcChange(tasksOpenCurr, tasksOpenPrev),
       sparkline: [],
       href: "/reports/activity",
-    },
-    {
-      label: "campaignsSent",
-      value: campaignsCurr,
-      previousValue: campaignsPrev,
-      changePercent: calcChange(campaignsCurr, campaignsPrev),
-      sparkline: [],
-      href: "/reports/campaigns",
     },
     {
       label: "newAccounts",

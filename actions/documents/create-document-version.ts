@@ -7,7 +7,7 @@ import {
 } from "@/lib/authz";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { inngest } from "@/inngest/client";
+
 
 interface CreateVersionInput {
   parentDocumentId: string;
@@ -71,10 +71,7 @@ export async function createDocumentVersion(input: CreateVersionInput) {
     }),
   ]);
 
-  await inngest.send({
-    name: "document/uploaded",
-    data: { documentId: input.parentDocumentId },
-  });
+
 
   revalidatePath("/[locale]/(routes)/documents");
   return newDoc;

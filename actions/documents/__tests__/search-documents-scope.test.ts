@@ -10,10 +10,6 @@ jest.mock("@/lib/prisma", () => ({
     $queryRaw: jest.fn(),
   },
 }));
-jest.mock("@/inngest/lib/embedding-utils", () => ({
-  generateEmbedding: jest.fn(async () => [0.1, 0.2]),
-  toVectorLiteral: jest.fn(() => "[0.1,0.2]"),
-}));
 
 import { prismadb } from "@/lib/prisma";
 import { getSession } from "@/lib/auth-server";
@@ -61,38 +57,5 @@ describe("searchDocuments scope", () => {
     expect(call.where.parent_document_id).toBeNull();
     expect(call.where.deletedAt).toBeNull();
     expect(call.where.OR).toBeUndefined();
-  });
-
-  it("post-filters vector results via authorized id set", async () => {
-    mockUser("user", "u1");
-    // keyword: empty
-    (prismadb.documents.findMany as jest.Mock).mockResolvedValueOnce([]);
-    // raw vector: 5 ids
-    (prismadb.$queryRaw as jest.Mock).mockResolvedValue([
-      { id: "v1", similarity: 0.9 },
-      { id: "v2", similarity: 0.85 },
-      { id: "v3", similarity: 0.83 },
-      { id: "v4", similarity: 0.81 },
-      { id: "v5", similarity: 0.75 },
-    ]);
-    // filterAuthorizedDocumentIds is implemented via prismadb.documents.findMany — return only v1, v3
-    (prismadb.documents.findMany as jest.Mock).mockResolvedValue([
-      { id: "v1" },
-      { id: "v3" },
-    ]);
-    // 2nd findMany call (extraDocs lookup by ids) returns those two
-    (prismadb.documents.findMany as jest.Mock).mockResolvedValueOnce([
-      { id: "v1", document_name: "v1", summary: null, document_system_type: null, accounts: [] },
-      { id: "v3", document_name: "v3", summary: null, document_system_type: null, accounts: [] },
-    ]);
-
-    const res = await searchDocuments("foo");
-    const ids = res.map((r) => r.id);
-    expect(ids).toEqual(expect.arrayContaining(["v1", "v3"]));
-    expect(ids).not.toEqual(expect.arrayContaining(["v2", "v4", "v5"]));
-
-    // extraDocs query must use only the authorized ids
-    const extraCall = (prismadb.documents.findMany as jest.Mock).mock.calls[1][0];
-    expect(extraCall.where.id.in).toEqual(["v1", "v3"]);
   });
 });

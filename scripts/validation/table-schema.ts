@@ -40,7 +40,6 @@ export const ENTITY_TABLES = [
   'crm_Leads',
   'crm_Opportunities',
   'crm_Contracts',
-  'crm_campaigns',
 
   // Tasks & Projects
   'Boards',
@@ -57,8 +56,6 @@ export const ENTITY_TABLES = [
   'Employees',
   'ImageUpload',
   'TodoList',
-  'openAi_keys',
-  'gpt_models',
 ];
 
 /**
@@ -150,7 +147,6 @@ export const TABLE_SCHEMAS: Record<string, TableSchema> = {
     foreignKeys: [
       { field: 'account', referencedTable: 'crm_Accounts' },
       { field: 'assigned_to', referencedTable: 'Users' },
-      { field: 'campaign', referencedTable: 'crm_campaigns' },
       { field: 'contact', referencedTable: 'crm_Contacts' },
       { field: 'created_by', referencedTable: 'Users' },
       { field: 'sales_stage', referencedTable: 'crm_Opportunities_Sales_Stages' },
@@ -289,11 +285,7 @@ export const TABLE_SCHEMAS: Record<string, TableSchema> = {
   },
 
   // Other tables with minimal validation
-  crm_campaigns: {
-    tableName: 'crm_campaigns',
-    foreignKeys: [],
-    fieldDefinitions: [],
-  },
+
   crm_Industry_Type: {
     tableName: 'crm_Industry_Type',
     foreignKeys: [],
@@ -357,20 +349,6 @@ export const TABLE_SCHEMAS: Record<string, TableSchema> = {
       { field: 'userId', referencedTable: 'Users' },
     ],
     fieldDefinitions: [],
-  },
-  openAi_keys: {
-    tableName: 'openAi_keys',
-    foreignKeys: [
-      { field: 'user_id', referencedTable: 'Users' },
-    ],
-    fieldDefinitions: [],
-  },
-  gpt_models: {
-    tableName: 'gpt_models',
-    foreignKeys: [],
-    fieldDefinitions: [
-      { name: 'status', type: 'Enum', enumValues: ['ACTIVE', 'INACTIVE'] },
-    ],
   },
 };
 

@@ -81,9 +81,10 @@ export async function updateInvoice(invoiceId: string, raw: unknown) {
           discountTotal: totals.discountTotal.toString(),
           vatTotal: totals.vatTotal.toString(),
           grandTotal: totals.grandTotal.toString(),
-          balanceDue: totals.grandTotal
-            .minus(new Decimal(existing.paidTotal?.toString() ?? "0"))
-            .toString(),
+          balanceDue: Decimal.max(
+            totals.grandTotal.minus(new Decimal(existing.paidTotal?.toString() ?? "0")),
+            new Decimal(0)
+          ).toString(),
           lineItems: {
             create: input.lineItems!.map((l, i) => {
               const lt = computeLineTotal(lineInputs[i]);

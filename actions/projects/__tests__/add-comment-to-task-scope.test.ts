@@ -13,8 +13,6 @@ jest.mock("next/cache", () => ({ revalidatePath: jest.fn() }));
 jest.mock("@/lib/junction-helpers", () => ({
   junctionTableHelpers: { addWatcher: jest.fn(() => ({})) },
 }));
-jest.mock("@/lib/resend", () => ({ __esModule: true, default: jest.fn(async () => null) }));
-jest.mock("@/emails/NewTaskComment", () => ({ __esModule: true, default: () => null }));
 
 import { prismadb } from "@/lib/prisma";
 import { getSession } from "@/lib/auth-server";

@@ -5,9 +5,6 @@ jest.mock("@/lib/prisma", () => ({
     crm_Targets: { updateMany: jest.fn() },
   },
 }));
-jest.mock("@/lib/enrichment/presets/target-fields", () => ({
-  FIELD_MAP: { website: "website" },
-}));
 
 import { NextRequest } from "next/server";
 import { getSession } from "@/lib/auth-server";
@@ -35,7 +32,7 @@ beforeEach(() => jest.clearAllMocks());
 describe("PATCH /api/crm/targets/[id]", () => {
   it("401 when unauthenticated", async () => {
     mockedGetSession.mockResolvedValue(null as any);
-    const res = await PATCH(makeReq({ enrichmentFields: { website: "x" } }), {
+    const res = await PATCH(makeReq({ website: "x" }), {
       params: Promise.resolve({ id: "t1" }),
     });
     expect(res.status).toBe(401);
@@ -46,7 +43,7 @@ describe("PATCH /api/crm/targets/[id]", () => {
     mockedFindUnique.mockResolvedValue({ id: "u1", role: "user" } as any);
     mockedUpdateMany.mockResolvedValue({ count: 0 } as any);
 
-    const res = await PATCH(makeReq({ enrichmentFields: { website: "x" } }), {
+    const res = await PATCH(makeReq({ website: "x" }), {
       params: Promise.resolve({ id: "t1" }),
     });
     expect(res.status).toBe(404);
@@ -57,7 +54,7 @@ describe("PATCH /api/crm/targets/[id]", () => {
     mockedFindUnique.mockResolvedValue({ id: "u1", role: "user" } as any);
     mockedUpdateMany.mockResolvedValue({ count: 1 } as any);
 
-    const res = await PATCH(makeReq({ enrichmentFields: { website: "x" } }), {
+    const res = await PATCH(makeReq({ website: "x" }), {
       params: Promise.resolve({ id: "t1" }),
     });
     expect(res.status).toBe(200);
@@ -68,7 +65,7 @@ describe("PATCH /api/crm/targets/[id]", () => {
     mockedFindUnique.mockResolvedValue({ id: "m1", role: "manager" } as any);
     mockedUpdateMany.mockResolvedValue({ count: 1 } as any);
 
-    const res = await PATCH(makeReq({ enrichmentFields: { website: "x" } }), {
+    const res = await PATCH(makeReq({ website: "x" }), {
       params: Promise.resolve({ id: "t1" }),
     });
     expect(res.status).toBe(200);

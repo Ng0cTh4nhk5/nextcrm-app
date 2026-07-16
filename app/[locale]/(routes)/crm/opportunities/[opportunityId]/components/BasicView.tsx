@@ -40,7 +40,7 @@ export async function BasicView({ data }: OppsViewProps) {
   //console.log(data, "data");
   const users = await prismadb.users.findMany();
   const crmData = await getAllCrmData();
-  const { saleTypes, saleStages, campaigns, currencies } = crmData;
+  const { saleTypes, saleStages, currencies } = crmData;
   const cookieStore = await cookies();
   const defaultCurrency = await getDefaultCurrency();
   const displayCurrency = cookieStore.get("display_currency")?.value || defaultCurrency;
@@ -64,7 +64,6 @@ export async function BasicView({ data }: OppsViewProps) {
             opportunity={serializeDecimals(data)}
             saleTypes={saleTypes}
             saleStages={saleStages}
-            campaigns={campaigns}
             currencies={currencies.map((c: { code: string; name: string; symbol: string }) => ({ code: c.code, name: c.name, symbol: c.symbol }))}
           />
         </div>

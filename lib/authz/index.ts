@@ -30,10 +30,6 @@ export {
   filterAuthorizedLeadIds,
   filterAuthorizedOpportunityIds,
 } from "./scopes/crm";
-export {
-  assertCanCancelContactEnrichment,
-  assertCanCancelTargetEnrichment,
-} from "./scopes/crm";
 export { assertCanWriteAccount } from "./scopes/crm";
 export {
   accountUserScopeOR,
@@ -55,14 +51,6 @@ export {
   assertCanReadTargetList,
 } from "./scopes/crm";
 export { assertCanReadActivityForEntity } from "./scopes/crm";
-export {
-  campaignReadScopeWhere,
-  campaignTemplateReadScopeWhere,
-  assertCanReadCampaign,
-  assertCanWriteCampaign,
-  assertCanReadTemplate,
-  assertCanWriteTemplate,
-} from "./scopes/crm";
 export {
   documentReadScopeWhere,
   assertCanReadDocument,

@@ -8,7 +8,6 @@ describe("getReportScope", () => {
     expect(s.account).toEqual({});
     expect(s.contact).toEqual({});
     expect(s.task).toEqual({});
-    expect(s.campaign).toEqual({});
     expect(s.allowUserDirectory).toBe(true);
   });
 
@@ -44,7 +43,6 @@ describe("getReportScope", () => {
       ]),
     });
     expect(s.task).toMatchObject({ user: "u1" });
-    expect(s.campaign).toMatchObject({ created_by: "u1" });
     expect(s.allowUserDirectory).toBe(false);
   });
 });

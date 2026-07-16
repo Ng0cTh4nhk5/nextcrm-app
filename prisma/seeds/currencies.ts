@@ -4,15 +4,22 @@ const currencies = [
   { code: "EUR", name: "Euro", symbol: "€", isEnabled: true, isDefault: true },
   { code: "USD", name: "US Dollar", symbol: "$", isEnabled: true, isDefault: false },
   { code: "CZK", name: "Czech Koruna", symbol: "Kč", isEnabled: true, isDefault: false },
+  { code: "VND", name: "Vietnamese Dong", symbol: "₫", isEnabled: true, isDefault: false },
 ];
 
 const rates = [
   { fromCurrency: "EUR", toCurrency: "USD", rate: 1.084, source: ExchangeRateSource.ECB },
   { fromCurrency: "EUR", toCurrency: "CZK", rate: 25.315, source: ExchangeRateSource.ECB },
+  { fromCurrency: "EUR", toCurrency: "VND", rate: 27500.0, source: ExchangeRateSource.MANUAL },
   { fromCurrency: "USD", toCurrency: "EUR", rate: 0.92251, source: ExchangeRateSource.ECB },
   { fromCurrency: "USD", toCurrency: "CZK", rate: 23.35, source: ExchangeRateSource.ECB },
+  { fromCurrency: "USD", toCurrency: "VND", rate: 25400.0, source: ExchangeRateSource.MANUAL },
   { fromCurrency: "CZK", toCurrency: "EUR", rate: 0.0395, source: ExchangeRateSource.ECB },
   { fromCurrency: "CZK", toCurrency: "USD", rate: 0.04283, source: ExchangeRateSource.ECB },
+  { fromCurrency: "CZK", toCurrency: "VND", rate: 1090.0, source: ExchangeRateSource.MANUAL },
+  { fromCurrency: "VND", toCurrency: "USD", rate: 0.000039, source: ExchangeRateSource.MANUAL },
+  { fromCurrency: "VND", toCurrency: "EUR", rate: 0.000036, source: ExchangeRateSource.MANUAL },
+  { fromCurrency: "VND", toCurrency: "CZK", rate: 0.000917, source: ExchangeRateSource.MANUAL },
 ];
 
 export async function seedCurrencies(prisma: PrismaClient) {

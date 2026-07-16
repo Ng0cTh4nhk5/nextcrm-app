@@ -13,8 +13,10 @@ import { useAvatarContext } from "@/context/avatar-context";
 import { updateProfilePhoto } from "@/actions/user/update-profile-photo";
 import { useTranslations } from "next-intl";
 
+import { getUser } from "@/actions/get-user";
+
 interface ProfileFormProps {
-  data: Users;
+  data: NonNullable<Awaited<ReturnType<typeof getUser>>>;
 }
 
 export function ProfilePhotoForm({ data }: ProfileFormProps) {

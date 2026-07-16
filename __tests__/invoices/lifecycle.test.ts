@@ -20,26 +20,30 @@
  */
 const TEST_USER_ID_PLACEHOLDER = "00000000-0000-4000-a000-000000000001";
 
-const mockGetUser = jest.fn().mockResolvedValue({
+const mockUserData = {
   id: TEST_USER_ID_PLACEHOLDER,
   role: "admin",
   name: "Test User",
   email: "test@example.com",
   userLanguage: "en",
-});
+};
+
+const mockGetUser = jest.fn().mockImplementation(async () => mockUserData);
 
 jest.mock("@/actions/get-user", () => ({
   getUser: (...args: unknown[]) => mockGetUser(...args),
 }));
 
+const mockSession = {
+  user: {
+    id: TEST_USER_ID_PLACEHOLDER,
+    name: "Test User",
+    email: "test@example.com",
+  },
+};
+
 jest.mock("@/lib/auth-server", () => ({
-  getSession: jest.fn().mockResolvedValue({
-    user: {
-      id: TEST_USER_ID_PLACEHOLDER,
-      name: "Test User",
-      email: "test@example.com",
-    },
-  }),
+  getSession: jest.fn().mockImplementation(async () => mockSession),
 }));
 
 jest.mock("@/lib/invoices/fx", () => ({
@@ -68,6 +72,7 @@ import { cancelInvoice } from "@/actions/invoices/cancel-invoice";
 import { duplicateInvoice } from "@/actions/invoices/duplicate-invoice";
 import { addPayment } from "@/actions/invoices/add-payment";
 import { prismadb } from "@/lib/prisma";
+import { getSession } from "@/lib/auth-server";
 
 /* ------------------------------------------------------------------
  * Helpers
@@ -77,9 +82,12 @@ import { prismadb } from "@/lib/prisma";
 let testAccountId: string;
 let testTaxRateId: string | undefined;
 let testSeriesId: string | undefined;
+let createdTestUserId: string | null = null;
 
-/** Track invoices created so we can clean up */
+/** Track entities created so we can clean up */
 const createdInvoiceIds: string[] = [];
+const createdSeriesIds: string[] = [];
+const createdAccountIds: string[] = [];
 
 /** Shorthand to build a minimal create-invoice payload */
 function draftPayload(
@@ -88,6 +96,7 @@ function draftPayload(
 ) {
   return {
     accountId: testAccountId,
+    seriesId: testSeriesId,
     currency: "USD",
     type: "INVOICE",
     lineItems: [
@@ -111,25 +120,36 @@ function draftPayload(
 
 beforeAll(async () => {
   // Try to find a real user for the mock (avoids potential FK issues)
-  const existingUser = await prismadb.users.findFirst();
-  if (existingUser) {
-    mockGetUser.mockResolvedValue({
-      id: existingUser.id,
-      role: "admin",
-      name: existingUser.name ?? "Test User",
-      email: existingUser.email ?? "test@example.com",
-      userLanguage: "en",
+  let existingUser = await prismadb.users.findFirst();
+  if (!existingUser) {
+    existingUser = await prismadb.users.create({
+      data: {
+        id: TEST_USER_ID_PLACEHOLDER,
+        email: "test@example.com",
+        name: "Test User",
+        role: "admin",
+        userStatus: "ACTIVE",
+      },
     });
+    createdTestUserId = TEST_USER_ID_PLACEHOLDER;
   }
 
-  // Ensure a test account exists
-  let account = await prismadb.crm_Accounts.findFirst();
-  if (!account) {
-    account = await prismadb.crm_Accounts.create({
-      data: { v: 0, name: "Lifecycle Test Account", status: "Active" },
-    });
-  }
+  mockUserData.id = existingUser.id;
+  mockUserData.name = existingUser.name ?? "Test User";
+  mockUserData.email = existingUser.email ?? "test@example.com";
+  mockUserData.role = existingUser.role ?? "admin";
+
+  mockSession.user.id = existingUser.id;
+  mockSession.user.name = existingUser.name ?? "Test User";
+  mockSession.user.email = existingUser.email ?? "test@example.com";
+
+  // Create an isolated test account
+  const accountSuffix = Math.random().toString(36).substring(7);
+  const account = await prismadb.crm_Accounts.create({
+    data: { v: 0, name: `Lifecycle Test Account-${accountSuffix}`, status: "Active" },
+  });
   testAccountId = account.id;
+  createdAccountIds.push(account.id);
 
   // Find an active tax rate (may not exist in test DB)
   const taxRate = await prismadb.invoice_TaxRates.findFirst({
@@ -137,22 +157,22 @@ beforeAll(async () => {
   });
   testTaxRateId = taxRate?.id;
 
-  // Find or create a series + settings (required for issuing)
-  let series = await prismadb.invoice_Series.findFirst();
-  if (!series) {
-    series = await prismadb.invoice_Series.create({
-      data: {
-        name: "Test Series",
-        prefixTemplate: "INV-{YYYY}-",
-        resetPolicy: "YEARLY",
-        counter: 0,
-        active: true,
-      },
-    });
-  }
+  // Create an isolated test series (required for issuing)
+  const seriesSuffix = Math.random().toString(36).substring(7);
+  const testSeriesName = `Lifecycle Test Series-${seriesSuffix}`;
+  const series = await prismadb.invoice_Series.create({
+    data: {
+      name: testSeriesName,
+      prefixTemplate: `INV-${seriesSuffix}-{YYYY}-{####}`,
+      resetPolicy: "YEARLY",
+      counter: 0,
+      active: true,
+    },
+  });
   testSeriesId = series.id;
+  createdSeriesIds.push(series.id);
 
-  let settings = await prismadb.invoice_Settings.findFirst();
+  const settings = await prismadb.invoice_Settings.findFirst();
   if (!settings) {
     // Find a base currency
     let currency = await prismadb.currency.findFirst({
@@ -192,6 +212,22 @@ afterAll(async () => {
     await prismadb.invoices.deleteMany({
       where: { id: { in: createdInvoiceIds } },
     });
+  }
+
+  // Clean up isolated series and accounts (deleting invoices first satisfies foreign keys)
+  if (createdSeriesIds.length > 0) {
+    await prismadb.invoice_Series.deleteMany({
+      where: { id: { in: createdSeriesIds } },
+    });
+  }
+  if (createdAccountIds.length > 0) {
+    await prismadb.crm_Accounts.deleteMany({
+      where: { id: { in: createdAccountIds } },
+    });
+  }
+
+  if (createdTestUserId) {
+    await prismadb.users.delete({ where: { id: createdTestUserId } });
   }
   await prismadb.$disconnect();
 });

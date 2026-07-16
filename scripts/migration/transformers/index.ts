@@ -11,7 +11,6 @@ export { transformCrmContacts } from './crm-contacts-transformer';
 export { transformCrmLeads } from './crm-leads-transformer';
 export { transformCrmOpportunities } from './crm-opportunities-transformer';
 export { transformCrmContracts } from './crm-contracts-transformer';
-export { transformCrmCampaigns } from './crm-campaigns-transformer';
 export { transformCrmOpportunitiesSalesStages } from './crm-opportunities-sales-stages-transformer';
 export { transformCrmOpportunitiesType } from './crm-opportunities-type-transformer';
 export { transformCrmIndustryType } from './crm-industry-type-transformer';
@@ -31,8 +30,6 @@ export { transformMyAccount } from './my-account-transformer';
 export { transformEmployees } from './employees-transformer';
 export { transformImageUpload } from './image-upload-transformer';
 export { transformTodoList } from './todo-list-transformer';
-export { transformGptModels } from './gpt-models-transformer';
-export { transformOpenAiKeys } from './openai-keys-transformer';
 
 // Import all transformers to use in the registry
 import { transformUsers } from './users-transformer';
@@ -41,7 +38,6 @@ import { transformCrmContacts } from './crm-contacts-transformer';
 import { transformCrmLeads } from './crm-leads-transformer';
 import { transformCrmOpportunities } from './crm-opportunities-transformer';
 import { transformCrmContracts } from './crm-contracts-transformer';
-import { transformCrmCampaigns } from './crm-campaigns-transformer';
 import { transformCrmOpportunitiesSalesStages } from './crm-opportunities-sales-stages-transformer';
 import { transformCrmOpportunitiesType } from './crm-opportunities-type-transformer';
 import { transformCrmIndustryType } from './crm-industry-type-transformer';
@@ -61,8 +57,6 @@ import { transformMyAccount } from './my-account-transformer';
 import { transformEmployees } from './employees-transformer';
 import { transformImageUpload } from './image-upload-transformer';
 import { transformTodoList } from './todo-list-transformer';
-import { transformGptModels } from './gpt-models-transformer';
-import { transformOpenAiKeys } from './openai-keys-transformer';
 
 /**
  * Type definition for transformer function
@@ -87,7 +81,6 @@ export const TRANSFORMERS: Record<string, TransformerFunction> = {
   crm_Leads: transformCrmLeads,
   crm_Opportunities: transformCrmOpportunities,
   crm_Contracts: transformCrmContracts,
-  crm_campaigns: transformCrmCampaigns,
   crm_Opportunities_Sales_Stages: transformCrmOpportunitiesSalesStages,
   crm_Opportunities_Type: transformCrmOpportunitiesType,
   crm_Industry_Type: transformCrmIndustryType,
@@ -107,8 +100,6 @@ export const TRANSFORMERS: Record<string, TransformerFunction> = {
   Employees: transformEmployees,
   ImageUpload: transformImageUpload,
   TodoList: transformTodoList,
-  gpt_models: transformGptModels,
-  openAi_keys: transformOpenAiKeys,
 };
 
 /**

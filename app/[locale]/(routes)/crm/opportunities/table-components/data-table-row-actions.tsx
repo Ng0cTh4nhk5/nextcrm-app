@@ -85,7 +85,6 @@ export function DataTableRowActions<TData>({
               setOpen={setUpdateOpen}
               saleTypes={config.saleTypes}
               saleStages={config.saleStages}
-              campaigns={config.campaigns}
               currencies={config.currencies}
             />
           </div>

@@ -171,31 +171,6 @@ export async function filterAuthorizedOpportunityIds(
   return rows.map((r: { id: string }) => r.id);
 }
 
-export async function assertCanCancelContactEnrichment(
-  user: AuthzUser,
-  enrichmentId: string,
-): Promise<void> {
-  const row = (await prismadb.crm_Contact_Enrichment.findUnique({
-    where: { id: enrichmentId },
-    select: { id: true, triggeredBy: true },
-  })) as { id: string; triggeredBy: string | null } | null;
-  if (!row) throw new AuthorizationError();
-  if (user.role === "admin" || user.role === "manager") return;
-  if (row.triggeredBy !== user.id) throw new AuthorizationError();
-}
-
-export async function assertCanCancelTargetEnrichment(
-  user: AuthzUser,
-  enrichmentId: string,
-): Promise<void> {
-  const row = (await prismadb.crm_Target_Enrichment.findUnique({
-    where: { id: enrichmentId },
-    select: { id: true, triggeredBy: true },
-  })) as { id: string; triggeredBy: string | null } | null;
-  if (!row) throw new AuthorizationError();
-  if (user.role === "admin" || user.role === "manager") return;
-  if (row.triggeredBy !== user.id) throw new AuthorizationError();
-}
 
 export async function filterAuthorizedTargetIds(
   user: AuthzUser,
@@ -517,55 +492,6 @@ export async function assertCanReadActivityForEntity(
 // Write helpers delegate to read for now; can split later if needed.
 // ---------------------------------------------------------------------------
 
-export function campaignReadScopeWhere(user: AuthzUser) {
-  if (user.role === "admin" || user.role === "manager") {
-    return { status: { not: "deleted" } };
-  }
-  return { status: { not: "deleted" }, created_by: user.id };
-}
-
-export function campaignTemplateReadScopeWhere(user: AuthzUser) {
-  if (user.role === "admin" || user.role === "manager") {
-    return { deletedAt: null };
-  }
-  return { deletedAt: null, created_by: user.id };
-}
-
-export async function assertCanReadCampaign(
-  user: AuthzUser,
-  id: string,
-): Promise<void> {
-  const row = await prismadb.crm_campaigns.findFirst({
-    where: { id, ...campaignReadScopeWhere(user) },
-    select: { id: true },
-  });
-  if (!row) throw new AuthorizationError();
-}
-
-export async function assertCanWriteCampaign(
-  user: AuthzUser,
-  id: string,
-): Promise<void> {
-  return assertCanReadCampaign(user, id);
-}
-
-export async function assertCanReadTemplate(
-  user: AuthzUser,
-  id: string,
-): Promise<void> {
-  const row = await prismadb.crm_campaign_templates.findFirst({
-    where: { id, ...campaignTemplateReadScopeWhere(user) },
-    select: { id: true },
-  });
-  if (!row) throw new AuthorizationError();
-}
-
-export async function assertCanWriteTemplate(
-  user: AuthzUser,
-  id: string,
-): Promise<void> {
-  return assertCanReadTemplate(user, id);
-}
 
 // ---------------------------------------------------------------------------
 // E4.T1: Board + task scope helpers (Projects module).

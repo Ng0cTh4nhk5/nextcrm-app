@@ -5,7 +5,6 @@ jest.mock("@/lib/prisma", () => ({
   },
 }));
 jest.mock("next/cache", () => ({ revalidatePath: jest.fn() }));
-jest.mock("@/lib/sendmail", () => ({ __esModule: true, default: jest.fn() }));
 
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";

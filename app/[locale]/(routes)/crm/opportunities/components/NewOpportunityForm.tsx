@@ -41,7 +41,6 @@ import {
   crm_Contacts,
   crm_Opportunities_Sales_Stages,
   crm_Opportunities_Type,
-  crm_campaigns,
 } from "@prisma/client";
 import { createOpportunity } from "@/actions/crm/opportunities/create-opportunity";
 
@@ -51,7 +50,6 @@ type NewTaskFormProps = {
   contacts: crm_Contacts[];
   salesType: crm_Opportunities_Type[];
   saleStages: crm_Opportunities_Sales_Stages[];
-  campaigns: crm_campaigns[];
   currencies: { code: string; name: string; symbol: string }[];
   selectedStage?: string;
   accountId?: string;
@@ -63,7 +61,6 @@ export function NewOpportunityForm({
   contacts,
   salesType,
   saleStages,
-  campaigns,
   currencies,
   selectedStage,
   accountId,
@@ -113,7 +110,6 @@ export function NewOpportunityForm({
     assigned_to: z.string(),
     account: z.string(),
     contact: z.string(),
-    campaign: z.string(),
   });
 
   type NewAccountFormValues = z.infer<typeof formSchema>;
@@ -131,7 +127,6 @@ export function NewOpportunityForm({
       next_step: "",
       assigned_to: "",
       contact: "",
-      campaign: "",
       description: "",
       name: "",
     },
@@ -156,7 +151,6 @@ export function NewOpportunityForm({
         assigned_to: "",
         account: "",
         contact: "",
-        campaign: "",
       });
       onDialogClose();
     }
@@ -456,33 +450,6 @@ export function NewOpportunityForm({
                           {filteredContacts.map((contact) => (
                             <SelectItem key={contact.id} value={contact.id}>
                               {contact.first_name + " " + contact.last_name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="campaign"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>From campaign</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a campaign" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="flex overflow-y-auto h-56">
-                          {campaigns.map((campaign) => (
-                            <SelectItem key={campaign.id} value={campaign.id}>
-                              {campaign.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

@@ -5,7 +5,6 @@ jest.mock("@/lib/prisma", () => ({
     crm_Contacts: { count: jest.fn() },
     crm_Accounts: { count: jest.fn() },
     crm_Contracts: { count: jest.fn() },
-    crm_campaign_sends: { count: jest.fn() },
     tasks: { count: jest.fn() },
     users: { count: jest.fn() },
     exchangeRate: { findMany: jest.fn() },
@@ -26,7 +25,7 @@ describe("getDashboardKPIs", () => {
     (prismadb.crm_Opportunities.findMany as jest.Mock).mockResolvedValue([]);
   });
 
-  it("returns all 10 KPIs", async () => {
+  it("returns all 9 KPIs", async () => {
     (prismadb.crm_Opportunities.aggregate as jest.Mock)
       .mockResolvedValueOnce({ _sum: { budget: BigInt(100000) } })
       .mockResolvedValueOnce({ _sum: { budget: BigInt(80000) } })
@@ -37,13 +36,12 @@ describe("getDashboardKPIs", () => {
     (prismadb.crm_Contacts.count as jest.Mock).mockResolvedValueOnce(100).mockResolvedValueOnce(80);
     (prismadb.users.count as jest.Mock).mockResolvedValueOnce(30).mockResolvedValueOnce(25);
     (prismadb.tasks.count as jest.Mock).mockResolvedValueOnce(15).mockResolvedValueOnce(12).mockResolvedValueOnce(3).mockResolvedValueOnce(2);
-    (prismadb.crm_campaign_sends.count as jest.Mock).mockResolvedValueOnce(200).mockResolvedValueOnce(150).mockResolvedValueOnce(80).mockResolvedValueOnce(60);
     (prismadb.crm_Accounts.count as jest.Mock).mockResolvedValueOnce(20).mockResolvedValueOnce(15);
     (prismadb.crm_Contracts.count as jest.Mock).mockResolvedValueOnce(5).mockResolvedValueOnce(3);
 
     const result = await getDashboardKPIs(baseFilters);
 
-    expect(result).toHaveLength(10);
+    expect(result).toHaveLength(9);
     expect(result[0].label).toBe("totalRevenue");
     expect(result[0].href).toBe("/reports/sales");
   });
@@ -55,7 +53,6 @@ describe("getDashboardKPIs", () => {
       (prismadb.crm_Contacts.count as jest.Mock).mockResolvedValue(0);
       (prismadb.users.count as jest.Mock).mockResolvedValue(0);
       (prismadb.tasks.count as jest.Mock).mockResolvedValue(0);
-      (prismadb.crm_campaign_sends.count as jest.Mock).mockResolvedValue(0);
       (prismadb.crm_Accounts.count as jest.Mock).mockResolvedValue(0);
       (prismadb.crm_Contracts.count as jest.Mock).mockResolvedValue(0);
       const scope = getReportScope({ id: "u8", role: "user" });

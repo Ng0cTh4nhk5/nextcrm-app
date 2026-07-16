@@ -22,7 +22,8 @@
     "reports": "Звіти",
     "documents": "Документи",
     "storage": "Зберігання",
-    "settings": "Адміністрація"
+    "settings": "Адміністрація",
+    "invoices": "Invoices"
   },
   "DashboardPage": {
     "containerTitle": "Панель приладів",
@@ -41,7 +42,8 @@
     "storage": "Зберігання",
     "invoices": "Рахунк��",
     "campaigns": "Кампанії",
-    "targets": "Цілі"
+    "targets": "Цілі",
+    "contracts": "Contracts"
   },
   "RegisterComponent": {
     "cardTitle": "Створити новий обліковий запис",
@@ -69,7 +71,10 @@
     "low": "Низький",
     "medium": "Середній",
     "high": "Високий",
-    "critical": "Критичний"
+    "critical": "Критичний",
+    "overview": "Overview",
+    "history": "History",
+    "salesPotentialDescription": "Everything you need to know about sales potential"
   },
   "LanguageSelector": {
     "english": "Англійська",
@@ -95,7 +100,9 @@
       "addNew": "Додати нову компанію",
       "sheetTitle": "Створити нову компанію",
       "sheetDescription": "Додайте нову компанію або організацію до вашої CRM-системи.",
-      "empty": "Не знайдено призначених компаній"
+      "empty": "Не знайдено призначених компаній",
+      "notFound": "Account not found",
+      "detailTitle": "Account: {name}"
     },
     "contacts": {
       "pageTitle": "Контакти",
@@ -104,7 +111,9 @@
       "addNew": "Додати новий контакт",
       "sheetTitle": "Створити новий контакт",
       "sheetDescription": "Додайте новий контакт до вашої CRM-системи.",
-      "empty": "Не знайдено призначених контактів"
+      "empty": "Не знайдено призначених контактів",
+      "notFound": "Contact not found",
+      "detailTitle": "Contact detail view: {name}"
     },
     "opportunities": {
       "pageTitle": "Можливості",
@@ -113,7 +122,10 @@
       "addNew": "Додати нову можливість",
       "sheetTitle": "Створити нову можливість",
       "sheetDescription": "Створіть нову торгову можливість з інформацією про компанію, контакт та угоду",
-      "empty": "Не знайдено призначених можливостей"
+      "empty": "Не знайдено призначених можливостей",
+      "notFound": "Opportunity not found",
+      "detailTitle": "Opportunity {name} - detail view",
+      "descriptionPrefix": "Description - "
     },
     "leads": {
       "pageTitle": "Ліди",
@@ -122,7 +134,9 @@
       "addNew": "Додати новий лід",
       "sheetTitle": "Створити новий лід",
       "sheetDescription": "Заповніть деталі для створення нового ліда",
-      "empty": "Не знайдено призначених лідів"
+      "empty": "Не знайдено призначених лідів",
+      "notFound": "Lead not found",
+      "detailTitle": "Lead: {name}"
     },
     "contracts": {
       "pageTitle": "Договори",
@@ -131,7 +145,20 @@
       "addNew": "Додати новий договір",
       "sheetTitle": "Створити новий договір",
       "sheetDescription": "Заповніть деталі для створення нового договору",
-      "empty": "Не знайдено призначених договорів"
+      "empty": "Не знайдено призначених договорів",
+      "notFound": "Contract not found",
+      "detailTitle": "Contract: {title}",
+      "statusPrefix": "Status: {status}"
+    },
+    "products": {
+      "pageTitle": "Products",
+      "pageDescription": "Manage your products",
+      "notFound": "Product not found",
+      "detailTitle": "Product: {name}",
+      "statusPrefix": "Status: {status}",
+      "basic": "Basic",
+      "accounts": "Accounts ({count})",
+      "history": "History"
     }
   },
   "CrmAccountForm": {
@@ -279,7 +306,26 @@
       "emails": "Email Accounts",
       "emailsDesc": "Manage your connected IMAP mailboxes",
       "llms": "LLMs",
-      "llmsDesc": "Керуйте своїми LLM API-ключами"
+      "llmsDesc": "Керуйте своїми LLM API-ключами",
+      "profile": "Profile",
+      "security": "Security",
+      "preferences": "Preferences",
+      "developer": "Developer",
+      "profileDesc": "Update your photo and personal details",
+      "securityDesc": "Manage your password and account security",
+      "preferencesDesc": "Customize your language and display settings",
+      "developerDesc": "Manage API keys and developer integrations"
+    },
+    "cards": {
+      "photo": "Profile Photo",
+      "personalInfo": "Personal Information",
+      "changePassword": "Change Password",
+      "language": "Language",
+      "openai": "OpenAI Integration",
+      "apiTokens": "API Tokens"
+    },
+    "hero": {
+      "role": "Admin"
     }
   },
   "ProfileForm": {
@@ -328,7 +374,13 @@
       "success": "Успіх",
       "invited": "Користувача успішно запрошено",
       "error": "Помилка",
-      "errorDesc": "Щось пішло не так. Будь ласка, спробуйте ще раз."
+      "errorDesc": "Щось пішло не так. Будь ласка, спробуйте ще раз.",
+      "language": "Language",
+      "selectLanguage": "Select a user language",
+      "inviteButton": "Invite user",
+      "validation": {
+        "languageRequired": "Please select a user language."
+      }
     },
     "sendMail": {
       "trigger": "Надіслати листа всім",
@@ -338,6 +390,110 @@
       "message": "Повідомлення",
       "sendButton": "Надіслати",
       "sent": "Лист успішно надіслано"
+    },
+    "createUser": {
+      "formHeading": "Create new user",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "selectRole": "Select role",
+      "roleAdmin": "Admin",
+      "roleManager": "Manager",
+      "roleUser": "User",
+      "language": "Language",
+      "selectLanguage": "Select language",
+      "creating": "Creating...",
+      "createButton": "Create user",
+      "createSuccess": "User \"{name}\" created successfully!",
+      "createError": "An error occurred while creating the user.",
+      "validation": {
+        "nameMin": "Name must be at least 3 characters",
+        "emailInvalid": "Invalid email address",
+        "passwordMin": "Password must be at least 8 characters"
+      }
+    },
+    "userActions": {
+      "copyIdSuccess": "ID copied.",
+      "deleteSuccess": "User deleted successfully.",
+      "deleteError": "An error occurred while deleting the user. Please try again.",
+      "activateSuccess": "User activated successfully.",
+      "activateError": "An error occurred while activating the user. Please try again.",
+      "deactivateSuccess": "User deactivated successfully.",
+      "deactivateError": "An error occurred while deactivating the user. Please try again.",
+      "changeRoleSuccess": "Role changed to {role}.",
+      "changeRoleError": "An error occurred while changing the role. Please try again.",
+      "passwordMinLength": "Password must be at least 8 characters.",
+      "resetPasswordSuccess": "Password reset successfully.",
+      "resetPasswordError": "An error occurred while resetting the password. Please try again.",
+      "resetPasswordTitle": "Reset Password",
+      "resetPasswordDescription": "Set a new password for <strong>{name}</strong>",
+      "newPasswordLabel": "New password",
+      "passwordMinHint": "At least 8 characters",
+      "cancel": "Cancel",
+      "savePassword": "Save password",
+      "saving": "Saving...",
+      "openMenu": "Open menu",
+      "actionsTitle": "Actions",
+      "copyId": "Copy ID",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "resetPassword": "Reset password",
+      "setRole": "Set Role",
+      "delete": "Delete",
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "user": "User"
+      }
+    },
+    "usersTable": {
+      "noResults": "No results.",
+      "columns": {
+        "createdOn": "Date created",
+        "lastLogin": "Last login",
+        "name": "Name",
+        "email": "E-mail",
+        "role": "Role",
+        "status": "Status",
+        "language": "Language"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending"
+      },
+      "languages": {
+        "en": "English",
+        "vi": "Vietnamese"
+      },
+      "pagination": {
+        "rowsPerPage": "Rows per page",
+        "selectedOf": "{selected} of {total} row(s) selected.",
+        "pageOf": "Page {page} of {pages}",
+        "firstPage": "Go to first page",
+        "prevPage": "Go to previous page",
+        "nextPage": "Go to next page",
+        "lastPage": "Go to last page"
+      },
+      "toolbar": {
+        "filterEmail": "Filter email...",
+        "filterUsers": "Filter Users...",
+        "reset": "Reset",
+        "toggleColumns": "Toggle columns",
+        "view": "View"
+      },
+      "columnHeader": {
+        "asc": "Asc",
+        "desc": "Desc",
+        "hide": "Hide"
+      },
+      "facetedFilter": {
+        "selected": "selected",
+        "noResults": "No results found.",
+        "clearFilters": "Clear filters"
+      }
     }
   },
   "ProjectsPage": {
@@ -606,5 +762,170 @@
     "dashboard": "Панель приладів",
     "profileSettings": "Налаштування профілю",
     "logout": "Вийти"
+  },
+  "InvoicesPage": {
+    "title": "Invoices",
+    "description": "Manage invoices, payments, and billing",
+    "new": "New Invoice",
+    "search": "Search invoices...",
+    "status": {
+      "DRAFT": "Draft",
+      "ISSUED": "Issued",
+      "SENT": "Sent",
+      "PARTIALLY_PAID": "Partially Paid",
+      "PAID": "Paid",
+      "OVERDUE": "Overdue",
+      "CANCELLED": "Cancelled",
+      "DISPUTED": "Disputed",
+      "REFUNDED": "Refunded",
+      "WRITTEN_OFF": "Written Off"
+    },
+    "table": {
+      "number": "Number",
+      "account": "Account",
+      "issueDate": "Issued",
+      "dueDate": "Due",
+      "total": "Total",
+      "status": "Status",
+      "type": "Type",
+      "currency": "Currency"
+    },
+    "form": {
+      "account": "Account",
+      "currency": "Currency",
+      "series": "Invoice Series",
+      "dueDate": "Due Date",
+      "type": "Type",
+      "lineItems": "Line Items",
+      "addLine": "Add Line",
+      "product": "Product",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "discount": "Discount %",
+      "taxRate": "Tax Rate",
+      "total": "Total",
+      "publicNotes": "Public Notes",
+      "internalNotes": "Internal Notes",
+      "save": "Save Draft",
+      "issue": "Issue Invoice",
+      "bankName": "Bank Name",
+      "iban": "IBAN",
+      "swift": "SWIFT",
+      "variableSymbol": "Variable Symbol"
+    },
+    "actions": {
+      "issue": "Issue",
+      "cancel": "Cancel",
+      "duplicate": "Duplicate",
+      "send": "Send by Email",
+      "downloadPdf": "Download PDF",
+      "addPayment": "Add Payment",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "payment": {
+      "amount": "Amount",
+      "date": "Date",
+      "method": "Method",
+      "reference": "Reference",
+      "note": "Note"
+    }
+  },
+  "InvoicesAdminPage": {
+    "title": "Invoice Settings",
+    "description": "Configure invoice defaults and options",
+    "taxRates": {
+      "title": "Tax Rates",
+      "name": "Name",
+      "rate": "Rate %",
+      "isDefault": "Default",
+      "active": "Active",
+      "add": "Add Tax Rate",
+      "edit": "Edit Tax Rate",
+      "delete": "Delete Tax Rate"
+    },
+    "series": {
+      "title": "Invoice Series",
+      "name": "Name",
+      "prefix": "Prefix Template",
+      "resetPolicy": "Reset Policy",
+      "isDefault": "Default",
+      "active": "Active",
+      "add": "Add Series",
+      "edit": "Edit Series",
+      "delete": "Delete Series"
+    },
+    "settings": {
+      "title": "General Settings",
+      "baseCurrency": "Base Currency",
+      "defaultSeries": "Default Series",
+      "defaultTaxRate": "Default Tax Rate",
+      "defaultDueDays": "Default Due Days",
+      "bankName": "Bank Name",
+      "bankAccount": "Bank Account",
+      "iban": "IBAN",
+      "swift": "SWIFT",
+      "footerText": "Footer Text",
+      "save": "Save Settings"
+    }
+  },
+  "CampaignsPage": {
+    "title": "Campaigns",
+    "description": "Manage your email campaigns",
+    "newCampaign": "New Campaign",
+    "createCampaignDescription": "Create an email campaign",
+    "templates": {
+      "title": "Campaign Templates",
+      "description": "Reusable email templates"
+    },
+    "targets": {
+      "title": "Targets",
+      "description": "Manage your marketing and sales targets",
+      "notFound": "Target not found",
+      "detailTitle": "Target detail view: {name}",
+      "detailDescription": "Everything you need to know about this target"
+    },
+    "targetLists": {
+      "title": "Target Lists",
+      "description": "Manage your target lists for campaigns and outreach",
+      "notFound": "Target list not found",
+      "detailTitle": "Target List: {name}",
+      "detailDescription": "View and manage targets in this list"
+    }
+  },
+  "CrmDashboardPage": {
+    "title": "CRM Dashboard",
+    "description": "In development. After this compoment is finished, there will be a optimistic update of the data.",
+    "callsOverview": "Calls overview",
+    "tasksInAccounts": "Tasks in Accounts",
+    "meetingsOverview": "Meetings overview",
+    "leadsOverview": "Leads overview",
+    "titleUserId": "{name} | CRM Dashboard (in-progress)",
+    "descriptionUserId": "Your sales data in one place"
+  },
+  "CrmUserDashboard": {
+    "title": "{name} — My Dashboard",
+    "description": "Your personal CRM overview",
+    "totalTasks": "Total Tasks",
+    "openTasks": "Open Tasks",
+    "myLeads": "My Leads",
+    "activeOpportunities": "Active Opportunities",
+    "myTasksCardTitle": "My Tasks",
+    "noTasksAssigned": "No tasks assigned.",
+    "myOpportunitiesCardTitle": "My Opportunities",
+    "noOpportunitiesAssigned": "No opportunities assigned.",
+    "noLeadsAssigned": "No leads assigned.",
+    "table": {
+      "title": "Title",
+      "priority": "Priority",
+      "status": "Status",
+      "name": "Name",
+      "stage": "Stage",
+      "budget": "Budget",
+      "company": "Company",
+      "email": "Email",
+      "source": "Source"
+    }
   }
 }

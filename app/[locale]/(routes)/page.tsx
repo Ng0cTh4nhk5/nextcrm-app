@@ -24,7 +24,6 @@ import {
   getUsersTasksCount,
 } from "@/actions/dashboard/get-tasks-count";
 import { getInvoicesCount } from "@/actions/dashboard/get-invoices-count";
-import { getCampaignsCount } from "@/actions/dashboard/get-campaigns-count";
 import { getTargetsCount } from "@/actions/dashboard/get-targets-count";
 import { getLeadsCount } from "@/actions/dashboard/get-leads-count";
 import { getBoardsCount } from "@/actions/dashboard/get-boards-count";
@@ -60,7 +59,6 @@ const DashboardPage = async () => {
   const leads = await getLeadsCount();
   const tasks = await getTasksCount();
   const invoices = await getInvoicesCount();
-  const campaigns = await getCampaignsCount();
   const targets = await getTargetsCount();
   const storage = await getStorageSize();
   const projects = await getBoardsCount();
@@ -119,12 +117,6 @@ const DashboardPage = async () => {
           title={dict("invoices")}
           IconComponent={FileText}
           content={invoices}
-        />
-        <DashboardCard
-          href="/campaigns"
-          title={dict("campaigns")}
-          IconComponent={Megaphone}
-          content={campaigns}
         />
         <DashboardCard
           href="/crm/targets"

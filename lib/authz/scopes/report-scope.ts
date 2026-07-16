@@ -6,7 +6,6 @@ export interface ReportScope {
   account: Record<string, unknown>;
   contact: Record<string, unknown>;
   task: Record<string, unknown>;
-  campaign: Record<string, unknown>;
   allowUserDirectory: boolean;
 }
 
@@ -16,7 +15,6 @@ const EMPTY: ReportScope = {
   account: {},
   contact: {},
   task: {},
-  campaign: {},
   allowUserDirectory: true,
 };
 
@@ -41,7 +39,6 @@ export function getReportScope(user: AuthzUser): ReportScope {
       ],
     },
     task: { user: user.id },
-    campaign: { created_by: user.id },
     allowUserDirectory: false,
   };
 }

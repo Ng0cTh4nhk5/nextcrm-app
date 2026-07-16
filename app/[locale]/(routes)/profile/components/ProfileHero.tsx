@@ -3,8 +3,10 @@ import { Users } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 import { ProfileHeroAvatar } from "./ProfileHeroAvatar";
 
+import { getUser } from "@/actions/get-user";
+
 type Props = {
-  data: Users;
+  data: NonNullable<Awaited<ReturnType<typeof getUser>>>;
 };
 
 export async function ProfileHero({ data }: Props) {

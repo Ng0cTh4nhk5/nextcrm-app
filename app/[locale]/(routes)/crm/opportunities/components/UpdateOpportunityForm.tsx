@@ -45,7 +45,6 @@ type UpdateOpportunityFormProps = {
   setOpen: (value: boolean) => void;
   saleTypes: ConfigItem[];
   saleStages: ConfigItem[];
-  campaigns: ConfigItem[];
   currencies: { code: string; name: string; symbol: string }[];
 };
 
@@ -54,7 +53,6 @@ export function UpdateOpportunityForm({
   setOpen,
   saleTypes,
   saleStages,
-  campaigns,
   currencies,
 }: UpdateOpportunityFormProps) {
   const t = useTranslations("CrmOpportunityForm");
@@ -76,7 +74,6 @@ export function UpdateOpportunityForm({
     assigned_to: z.string().nullable().optional(),
     account: z.string().nullable().optional(),
     contact: z.string().nullable().optional(),
-    campaign: z.string().nullable().optional(),
   });
 
   type NewAccountFormValues = z.infer<typeof formSchema>;
@@ -94,7 +91,6 @@ export function UpdateOpportunityForm({
       assigned_to: initialData.assigned_to ?? "",
       account: initialData.account ?? "",
       contact: initialData.contact ?? "",
-      campaign: initialData.campaign ?? "",
       type: initialData.type ?? "",
       sales_stage: initialData.sales_stage ?? "",
     },
@@ -380,33 +376,6 @@ export function UpdateOpportunityForm({
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="campaign"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>From campaign</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a campaign" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="flex overflow-y-auto h-56">
-                          {campaigns.map((campaign: any) => (
-                            <SelectItem key={campaign.id} value={campaign.id}>
-                              {campaign.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

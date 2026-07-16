@@ -15,9 +15,7 @@ jest.mock("@/lib/prisma", () => {
   };
 });
 jest.mock("next/cache", () => ({ revalidatePath: jest.fn() }));
-jest.mock("@/inngest/client", () => ({
-  inngest: { send: jest.fn().mockResolvedValue(undefined) },
-}));
+
 
 import { prismadb } from "@/lib/prisma";
 import { getSession } from "@/lib/auth-server";

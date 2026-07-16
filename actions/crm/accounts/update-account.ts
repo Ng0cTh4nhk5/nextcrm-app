@@ -2,7 +2,7 @@
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { inngest } from "@/inngest/client";
+
 import { writeAuditLog, diffObjects } from "@/lib/audit-log";
 
 export const updateAccount = async (data: {
@@ -58,7 +58,7 @@ export const updateAccount = async (data: {
       changes,
       userId: session.user.id,
     });
-    void inngest.send({ name: "crm/account.saved", data: { record_id: account.id } });
+
     revalidatePath("/", "layout");
     return { data: account };
   } catch (error) {

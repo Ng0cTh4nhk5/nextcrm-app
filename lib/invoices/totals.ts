@@ -15,6 +15,20 @@ export interface LineTotal {
 
 const TWO_DP = 2;
 
+/**
+ * Computes subtotal, VAT, and total for a single invoice line item.
+ * 
+ * Rounding Strategy (Accumulated Rounding):
+ * Each intermediate result (lineSubtotal, lineVat, lineTotal) is immediately rounded
+ * to 2 decimal places (TWO_DP) using Decimal.js's default rounding mode (ROUND_HALF_UP).
+ * This ensures that:
+ * 1. Line subtotal plus line VAT equals line total exactly.
+ * 2. Visual rendering of each line item matches its stored database representation.
+ * 
+ * Note: Rounding line items individually before aggregating them can lead to an
+ * accumulated rounding difference of ±1-2 cents compared to rounding the grand totals 
+ * at the very end. This is a deliberate trade-off to maintain line-item consistency.
+ */
 export function computeLineTotal(line: LineInput): LineTotal {
   const gross = line.quantity.mul(line.unitPrice);
   const discount = gross.mul(line.discountPercent).div(100);

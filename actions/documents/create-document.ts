@@ -7,7 +7,7 @@ import {
 } from "@/lib/authz";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { inngest } from "@/inngest/client";
+
 
 interface CreateDocumentInput {
   name: string;
@@ -56,10 +56,7 @@ export async function createDocument(input: CreateDocumentInput) {
     },
   });
 
-  await inngest.send({
-    name: "document/uploaded",
-    data: { documentId: document.id },
-  });
+
 
   revalidatePath("/[locale]/(routes)/documents");
   return document;
