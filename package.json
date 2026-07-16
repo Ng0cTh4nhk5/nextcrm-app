@@ -189,9 +189,6 @@
       "prisma",
       "sharp",
       "unrs-resolver"
-    ],
-    "neverBuiltDependencies": [
-      "canvas"
     ]
   }
 }
