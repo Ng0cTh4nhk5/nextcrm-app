@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -73,7 +73,7 @@ export const updateContact = async (data: {
       userId: session.user.id,
     });
     void inngest.send({ name: "crm/contact.saved", data: { record_id: contact.id } });
-    revalidatePath("/[locale]/(routes)/crm/contacts", "page");
+    revalidatePath("/", "layout");
     return { data: contact };
   } catch (error) {
     console.log("[UPDATE_CONTACT]", error);

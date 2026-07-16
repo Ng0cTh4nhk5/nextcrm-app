@@ -1,9 +1,7 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import NewTaskFromProject from "@/emails/NewTaskFromProject";
-import resendHelper from "@/lib/resend";
 import {
   requireAuthenticated,
   assertCanWriteBoard,
@@ -56,7 +54,7 @@ export const createTask = async (data: {
       where: { section: sectionId.id },
     });
 
-    const task = await prismadb.tasks.create({
+    await prismadb.tasks.create({
       data: {
         v: 0,
         priority,
@@ -77,54 +75,7 @@ export const createTask = async (data: {
       data: { updatedAt: new Date() },
     });
 
-    // Send email notification if assigning to a different user
-    if (user !== session.user.id) {
-      try {
-        let resend;
-        try {
-          resend = await resendHelper();
-        } catch {
-          resend = null;
-        }
-
-        if (resend) {
-          const notifyRecipient = await prismadb.users.findUnique({
-            where: { id: user },
-          });
-
-          const boardData = await prismadb.boards.findUnique({
-            where: { id: board },
-          });
-
-          if (notifyRecipient?.email) {
-            await resend.emails.send({
-              from:
-                process.env.NEXT_PUBLIC_APP_NAME +
-                " <" +
-                process.env.EMAIL_FROM +
-                ">",
-              to: notifyRecipient.email,
-              subject:
-                session.user.userLanguage === "en"
-                  ? `New task - ${title}.`
-                  : `Nový úkol - ${title}.`,
-              text: "",
-              react: NewTaskFromProject({
-                taskFromUser: session.user.name!,
-                username: notifyRecipient.name!,
-                userLanguage: notifyRecipient.userLanguage!,
-                taskData: task,
-                boardData,
-              }),
-            });
-          }
-        }
-      } catch (emailError) {
-        console.log("[CREATE_TASK_EMAIL]", emailError);
-      }
-    }
-
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[CREATE_TASK]", error);

@@ -1,20 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ProcessingStatusBadge } from "./processing-status-badge";
 import { getDocumentVersions } from "@/actions/documents/get-document-versions";
-import { retryEnrichment } from "@/actions/documents/retry-enrichment";
-import { toast } from "sonner";
 import moment from "moment";
 import { DocumentRow } from "../data/schema";
 
@@ -32,7 +28,6 @@ export function DocumentDetailPanel({
   const [versions, setVersions] = useState<
     { id: string; version: number; createdAt: Date | null; size: number | null; created_by: { name: string | null } | null }[]
   >([]);
-  const router = useRouter();
 
   useEffect(() => {
     if (document?.id && open) {
@@ -41,16 +36,6 @@ export function DocumentDetailPanel({
   }, [document?.id, open]);
 
   if (!document) return null;
-
-  const handleRetry = async () => {
-    try {
-      await retryEnrichment(document.id);
-      toast.success("Enrichment re-triggered");
-      router.refresh();
-    } catch {
-      toast.error("Failed to retry enrichment");
-    }
-  };
 
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -63,11 +48,7 @@ export function DocumentDetailPanel({
           {/* Status */}
           <div className="flex items-center gap-2">
             <ProcessingStatusBadge status={document.processing_status} />
-            {document.processing_status === "FAILED" && (
-              <Button variant="outline" size="sm" onClick={handleRetry}>
-                Retry
-              </Button>
-            )}
+
           </div>
 
           {/* Summary */}

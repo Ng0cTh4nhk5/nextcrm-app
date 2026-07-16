@@ -22,7 +22,6 @@ import moment from "moment";
 import Link from "next/link";
 import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/components/ui/badge";
-import { EnrichButton } from "./EnrichButton";
 import { TargetContactsTable } from "./TargetContactsTable";
 
 interface TargetContact {
@@ -54,10 +53,7 @@ export async function BasicView({ data }: TargetBasicViewProps) {
               </CardTitle>
               <CardDescription>ID: {data.id}</CardDescription>
             </div>
-            <div className="flex items-center gap-2">
-              <EnrichButton targetId={data.id} />
-              <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-            </div>
+            <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
           </div>
         </CardHeader>
         <CardContent>

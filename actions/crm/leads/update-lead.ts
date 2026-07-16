@@ -1,8 +1,7 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import sendEmail from "@/lib/sendmail";
 import { inngest } from "@/inngest/client";
 import { writeAuditLog, diffObjects } from "@/lib/audit-log";
 
@@ -71,26 +70,6 @@ export const updateLead = async (data: {
       },
     });
 
-    if (assigned_to && assigned_to !== userId) {
-      const notifyRecipient = await prismadb.users.findFirst({
-        where: { id: assigned_to },
-      });
-
-      if (notifyRecipient) {
-        await sendEmail({
-          from: process.env.EMAIL_FROM as string,
-          to: notifyRecipient.email || "info@softbase.cz",
-          subject:
-            notifyRecipient.userLanguage === "en"
-              ? `New lead ${firstName} ${lastName} has been added to the system and assigned to you.`
-              : `Nová příležitost ${firstName} ${lastName} byla přidána do systému a přidělena vám.`,
-          text:
-            notifyRecipient.userLanguage === "en"
-              ? `New lead ${firstName} ${lastName} has been added to the system and assigned to you. You can click here for detail: ${process.env.NEXT_PUBLIC_APP_URL}/crm/leads/${lead.id}`
-              : `Nová příležitost ${firstName} ${lastName} byla přidána do systému a přidělena vám. Detaily naleznete zde: ${process.env.NEXT_PUBLIC_APP_URL}/crm/leads/${lead.id}`,
-        });
-      }
-    }
 
     const changes = before ? diffObjects(before as Record<string, unknown>, lead as Record<string, unknown>) : null;
     await writeAuditLog({
@@ -101,7 +80,7 @@ export const updateLead = async (data: {
       userId: session.user.id,
     });
     void inngest.send({ name: "crm/lead.saved", data: { record_id: lead.id } });
-    revalidatePath("/[locale]/(routes)/crm/leads", "page");
+    revalidatePath("/", "layout");
     return { data: lead };
   } catch (error) {
     console.log("[UPDATE_LEAD]", error);

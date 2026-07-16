@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import {
@@ -42,7 +42,7 @@ export const updateSectionTitle = async (data: {
       data: { title: newTitle },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[UPDATE_SECTION_TITLE]", error);

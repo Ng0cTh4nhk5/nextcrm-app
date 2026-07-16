@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -22,7 +22,7 @@ export const deleteOpportunity = async (opportunityId: string) => {
       changes: null,
       userId: session.user.id,
     });
-    revalidatePath("/[locale]/(routes)/crm/opportunities", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[DELETE_OPPORTUNITY]", error);

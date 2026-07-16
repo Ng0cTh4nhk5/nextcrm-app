@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import {
@@ -34,7 +34,7 @@ export const deleteUser = async (userId: string) => {
         lastLoginAt: true,
       },
     });
-    revalidatePath("/[locale]/(routes)/admin", "page");
+    revalidatePath("/", "layout");
     return { data: user };
   } catch (error) {
     console.log("[DELETE_USER]", error);

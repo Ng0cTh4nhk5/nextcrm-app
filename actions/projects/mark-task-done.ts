@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -39,7 +39,7 @@ export const markTaskDone = async (taskId: string) => {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[MARK_TASK_DONE]", error);

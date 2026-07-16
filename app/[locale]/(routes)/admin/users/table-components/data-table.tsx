@@ -16,6 +16,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { useTranslations } from "next-intl";
+
 import {
   Table,
   TableBody,
@@ -37,6 +39,7 @@ export function AdminUserDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations("AdminPage.usersTable");
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -113,7 +116,7 @@ export function AdminUserDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}

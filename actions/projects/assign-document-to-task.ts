@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -61,7 +61,7 @@ export const assignDocumentToTask = async (data: {
       data: { updatedBy: session.user.id },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[ASSIGN_DOCUMENT_TO_TASK]", error);
@@ -101,7 +101,7 @@ export const disconnectDocumentFromTask = async (data: {
       data: { updatedBy: session.user.id },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { data: updatedTask };
   } catch (error) {
     console.log("[DISCONNECT_DOCUMENT_FROM_TASK]", error);

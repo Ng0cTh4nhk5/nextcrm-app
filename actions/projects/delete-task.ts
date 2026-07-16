@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -75,7 +75,7 @@ export const deleteTask = async (data: { id: string; section?: string }) => {
       }
     }
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[DELETE_TASK]", error);

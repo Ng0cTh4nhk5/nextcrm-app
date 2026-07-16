@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -21,7 +21,7 @@ export const reorderOpportunityLineItems = async (
       )
     );
 
-    revalidatePath("/[locale]/(routes)/crm/opportunities/[opportunityId]", "page");
+    revalidatePath("/", "layout");
     return { data: { success: true } };
   } catch (error) {
     console.log("[REORDER_OPPORTUNITY_LINE_ITEMS]", error);

@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { TipTapEditor } from "@/components/campaigns/TipTapEditor";
 import { createTemplate } from "@/actions/campaigns/templates/create-template";
 import { updateTemplate } from "@/actions/campaigns/templates/update-template";
-import { generateTemplate } from "@/actions/campaigns/templates/generate-template";
 
 type InitialData = {
   name: string;
@@ -39,32 +38,12 @@ export default function TemplateEditorForm({ initialData, templateId }: Props) {
     initialData?.content_json ?? {}
   );
 
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleEditorChange = (html: string, json: object) => {
     setContentHtml(html);
     setContentJson(json);
-  };
-
-  const handleGenerate = async () => {
-    if (!aiPrompt.trim()) return;
-    setIsGenerating(true);
-    setError(null);
-    try {
-      const result = await generateTemplate(aiPrompt);
-      setContentHtml(result.html);
-      setContentJson(result.json);
-      if (result.subject && !subject) {
-        setSubject(result.subject);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "AI generation failed");
-    } finally {
-      setIsGenerating(false);
-    }
   };
 
   const handleSave = async () => {
@@ -144,29 +123,6 @@ export default function TemplateEditorForm({ initialData, templateId }: Props) {
             required
           />
         </div>
-      </div>
-
-      {/* AI Generation */}
-      <div className="flex flex-col gap-3 rounded-md border p-4 bg-muted/30">
-        <h3 className="font-semibold text-sm">Generate with AI</h3>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="ai-prompt">Describe the email you want</Label>
-          <Textarea
-            id="ai-prompt"
-            value={aiPrompt}
-            onChange={(e) => setAiPrompt(e.target.value)}
-            placeholder="e.g. A warm outreach email introducing our SaaS product to a B2B prospect, focusing on ROI benefits"
-            rows={3}
-          />
-        </div>
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={handleGenerate}
-          disabled={isGenerating || !aiPrompt.trim()}
-        >
-          {isGenerating ? "Generating..." : "Generate"}
-        </Button>
       </div>
 
       {/* TipTap Editor */}

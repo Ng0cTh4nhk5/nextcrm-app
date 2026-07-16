@@ -15,170 +15,113 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { MailIcon } from "lucide-react";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-
-type Step = "email" | "otp";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 
 export function LoginComponent() {
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const loginWithGoogle = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Vui lòng nhập email và mật khẩu.");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      await authClient.signIn.social({
-        provider: "google",
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
         callbackURL: "/",
       });
-    } catch (error) {
-      toast.error("Something went wrong with Google sign-in.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const sendOtp = async () => {
-    if (!email) {
-      toast.error("Please enter your email address.");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
-        email,
-        type: "sign-in",
-      });
       if (error) {
-        toast.error(error.message || "Failed to send verification code.");
+        toast.error(
+          error.message === "Invalid email or password"
+            ? "Email hoặc mật khẩu không đúng."
+            : error.message || "Đăng nhập thất bại."
+        );
         return;
       }
-      setStep("otp");
-      toast.success("Verification code sent to your email.");
-    } catch (error) {
-      toast.error("Failed to send verification code.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const verifyOtp = async () => {
-    if (otp.length !== 6) {
-      toast.error("Please enter the 6-digit code.");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const { error } = await authClient.signIn.emailOtp({
-        email,
-        otp,
-      });
-      if (error) {
-        toast.error(error.message || "Invalid or expired code.");
-        return;
-      }
-      toast.success("Login successful.");
+      toast.success("Đăng nhập thành công!");
       window.location.href = "/";
     } catch (error) {
-      toast.error("Verification failed.");
+      toast.error("Có lỗi xảy ra, vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Card className="shadow-lg my-5">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Choose your sign-in method</CardDescription>
+    <Card className="shadow-lg my-5 w-full">
+      <CardHeader className="space-y-1 pb-4">
+        <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+        <CardDescription>
+          Nhập email và mật khẩu để truy cập hệ thống
+        </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <Button
-          variant="outline"
-          onClick={loginWithGoogle}
-          disabled={isLoading}
-          className="w-full"
-        >
-          <Icons.google className="mr-2 h-4 w-4" />
-          Continue with Google
-        </Button>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with email
-            </span>
-          </div>
-        </div>
-
-        {step === "email" && (
-          <div className="grid gap-3">
-            <div className="grid gap-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@domain.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isLoading}
-                onKeyDown={(e) => e.key === "Enter" && sendOtp()}
-              />
-            </div>
-            <Button onClick={sendOtp} disabled={isLoading || !email}>
-              <MailIcon className="mr-2 h-4 w-4" />
-              Send verification code
-            </Button>
-          </div>
-        )}
-
-        {step === "otp" && (
-          <div className="grid gap-3">
-            <p className="text-sm text-muted-foreground">
-              Enter the 6-digit code sent to <strong>{email}</strong>
-            </p>
-            <div className="flex justify-center">
-              <InputOTP
-                maxLength={6}
-                value={otp}
-                onChange={setOtp}
-                disabled={isLoading}
-              >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-            </div>
-            <Button onClick={verifyOtp} disabled={isLoading || otp.length !== 6}>
-              Verify and sign in
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setStep("email");
-                setOtp("");
-              }}
+      <CardContent>
+        <form onSubmit={handleLogin} className="grid gap-4">
+          <div className="grid gap-1.5">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="name@domain.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
-            >
-              Use a different email
-            </Button>
+              autoComplete="email"
+              autoFocus
+            />
           </div>
-        )}
+
+          <div className="grid gap-1.5">
+            <Label htmlFor="password">Mật khẩu</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                autoComplete="current-password"
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={isLoading || !email || !password}
+            className="w-full mt-1"
+          >
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <LogIn className="mr-2 h-4 w-4" />
+            )}
+            {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );

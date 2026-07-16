@@ -8,7 +8,14 @@ declare global {
 
 // Prisma Client configuration with connection pooling and lifecycle management
 const prismaClientSingleton = () => {
-  const connectionString = `${process.env.DATABASE_URL}`;
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error(
+      "[prisma.ts] DATABASE_URL environment variable is not set. " +
+      "Please configure it in your .env file or Vercel dashboard."
+    );
+  }
+
   const pool = new Pool({ connectionString });
   const adapter = new PrismaPg(pool);
 

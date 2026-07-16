@@ -1,116 +1,130 @@
 "use client";
 
 import moment from "moment";
-
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations, useLocale } from "next-intl";
+import { vi, enUS } from "date-fns/locale";
+import { formatDistanceToNowStrict } from "date-fns";
 
 import { statuses } from "../table-data/data";
 import { AdminUser } from "../table-data/schema";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { formatDistanceToNowStrict } from "date-fns";
+
+const CreatedOnCell = ({ value }: { value: string }) => {
+  return (
+    <div className="w-[130px]">
+      {moment(value).format("YYYY/MM/DD-HH:mm")}
+    </div>
+  );
+};
+
+const LastLoginCell = ({ value }: { value?: Date | string | null }) => {
+  const locale = useLocale();
+  const localeObj = locale === "vi" ? vi : enUS;
+  return (
+    <div className="min-w-[150px]">
+      {formatDistanceToNowStrict(
+        new Date(value || new Date()),
+        {
+          addSuffix: true,
+          locale: localeObj,
+        }
+      )}
+    </div>
+  );
+};
+
+const NameCell = ({ value }: { value: string }) => {
+  return <div className="">{value}</div>;
+};
+
+const EmailCell = ({ value }: { value: string }) => {
+  return <div className="">{value}</div>;
+};
+
+const RoleCell = ({ role }: { role?: string | null }) => {
+  const t = useTranslations("AdminPage.userActions.roles");
+  const roleKey = (role?.toLowerCase() || "user") as "admin" | "manager" | "user";
+  return <div className="">{t(roleKey)}</div>;
+};
+
+const StatusCell = ({ statusValue }: { statusValue: string }) => {
+  const t = useTranslations("AdminPage.usersTable.statuses");
+  const statusKey = statusValue.toLowerCase() as "active" | "inactive" | "pending";
+  const status = statuses.find((s) => s.value === statusValue);
+  if (!status) return null;
+  return (
+    <div className="flex items-center">
+      {status.icon && (
+        <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+      )}
+      <span>{t(statusKey, { defaultValue: status.label })}</span>
+    </div>
+  );
+};
+
+const LanguageCell = ({ language }: { language: string }) => {
+  const t = useTranslations("AdminPage.usersTable.languages");
+  const langKey = language.toLowerCase() as "en" | "vi";
+  return <div className="">{t(langKey, { defaultValue: language })}</div>;
+};
 
 export const columns: ColumnDef<AdminUser>[] = [
-  /*   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="id" />
-    ),
-    cell: ({ row }) => <div className="">{row.getValue("id")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  }, */
   {
     accessorKey: "created_on",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date created" />
+      <DataTableColumnHeader column={column} title="columns.createdOn" />
     ),
-    cell: ({ row }) => (
-      <div className="w-[130px]">
-        {moment(row.getValue("created_on")).format("YYYY/MM/DD-HH:mm")}
-      </div>
-    ),
+    cell: ({ row }) => <CreatedOnCell value={row.getValue("created_on")} />,
     enableSorting: true,
     enableHiding: true,
   },
   {
     accessorKey: "lastLoginAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last login" />
+      <DataTableColumnHeader column={column} title="columns.lastLogin" />
     ),
-    cell: ({ row }) => (
-      <div className="min-w-[150px]">
-        {/*   {moment(row.getValue("lastLoginAt")).format("YYYY/MM/DD-HH:mm")} */}
-        {formatDistanceToNowStrict(
-          new Date(row.original.lastLoginAt || new Date()),
-          {
-            addSuffix: true,
-          }
-        )}
-      </div>
-    ),
+    cell: ({ row }) => <LastLoginCell value={row.original.lastLoginAt} />,
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="columns.name" />
     ),
-
-    cell: ({ row }) => <div className="">{row.getValue("name")}</div>,
+    cell: ({ row }) => <NameCell value={row.getValue("name")} />,
     enableSorting: true,
     enableHiding: true,
   },
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="E-mail" />
+      <DataTableColumnHeader column={column} title="columns.email" />
     ),
-
-    cell: ({ row }) => <div className="">{row.getValue("email")}</div>,
+    cell: ({ row }) => <EmailCell value={row.getValue("email")} />,
     enableSorting: true,
     enableHiding: true,
   },
   {
     accessorKey: "role",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Role" />
+      <DataTableColumnHeader column={column} title="columns.role" />
     ),
-
-    cell: ({ row }) => (
-      <div className="">{row.original.role ?? "user"}</div>
-    ),
+    cell: ({ row }) => <RoleCell role={row.original.role} />,
     enableSorting: true,
     enableHiding: true,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
-
   {
     accessorKey: "userStatus",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="columns.status" />
     ),
-    cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("userStatus")
-      );
-
-      if (!status) {
-        return null;
-      }
-
-      return (
-        <div className="flex items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
-        </div>
-      );
-    },
+    cell: ({ row }) => <StatusCell statusValue={row.getValue("userStatus")} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -118,10 +132,9 @@ export const columns: ColumnDef<AdminUser>[] = [
   {
     accessorKey: "userLanguage",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Language" />
+      <DataTableColumnHeader column={column} title="columns.language" />
     ),
-
-    cell: ({ row }) => <div className="">{row.getValue("userLanguage")}</div>,
+    cell: ({ row }) => <LanguageCell language={row.getValue("userLanguage")} />,
     enableSorting: true,
     enableHiding: true,
   },

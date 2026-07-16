@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 
-interface DataTableFacetedFilter<TData, TValue> {
+interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
   options: {
@@ -35,16 +36,32 @@ export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilter<TData, TValue>) {
+}: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+
+  const t = useTranslations("AdminPage.usersTable");
+  const tRoles = useTranslations("AdminPage.userActions.roles");
+  const tStatuses = useTranslations("AdminPage.usersTable.statuses");
+
+  const displayTitle = title ? t(title) : "";
+
+  const getOptionLabel = (option: typeof options[0]) => {
+    if (column?.id === "role") {
+      return tRoles(option.value.toLowerCase() as any);
+    }
+    if (column?.id === "userStatus") {
+      return tStatuses(option.value.toLowerCase() as any);
+    }
+    return option.label;
+  };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircledIcon className="mr-2 h-4 w-4" />
-          {title}
+          {displayTitle}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
@@ -60,7 +77,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValues.size} selected
+                    {selectedValues.size} {t("facetedFilter.selected")}
                   </Badge>
                 ) : (
                   options
@@ -71,7 +88,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         key={option.value}
                         className="rounded-sm px-1 font-normal"
                       >
-                        {option.label}
+                        {getOptionLabel(option)}
                       </Badge>
                     ))
                 )}
@@ -82,9 +99,9 @@ export function DataTableFacetedFilter<TData, TValue>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={title} />
+          <CommandInput placeholder={displayTitle} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t("facetedFilter.noResults")}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -116,7 +133,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     {option.icon && (
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
-                    <span>{option.label}</span>
+                    <span>{getOptionLabel(option)}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
@@ -134,7 +151,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    {t("facetedFilter.clearFilters")}
                   </CommandItem>
                 </CommandGroup>
               </>

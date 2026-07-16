@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { FIELD_MAP } from "@/lib/enrichment/presets/target-fields";
 import {
   requireAuthenticated,
   unauthorizedResponse,
@@ -22,15 +21,12 @@ export async function PATCH(
     throw e;
   }
 
-  const { enrichmentFields } = await request.json();
-  if (!enrichmentFields || typeof enrichmentFields !== "object") {
-    return NextResponse.json({ error: "enrichmentFields required" }, { status: 400 });
-  }
-
+  const body = await request.json();
   const updates: Record<string, string> = {};
-  for (const [key, value] of Object.entries(enrichmentFields)) {
-    const column = FIELD_MAP[key];
-    if (column) updates[column] = String(value);
+  if (body && typeof body === "object") {
+    for (const [key, value] of Object.entries(body)) {
+      if (typeof value === "string") updates[key] = value;
+    }
   }
 
   if (Object.keys(updates).length === 0) {

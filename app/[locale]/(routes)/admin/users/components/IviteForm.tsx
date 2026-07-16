@@ -28,25 +28,27 @@ import { Icons } from "@/components/ui/icons";
 import { useTranslations } from "next-intl";
 import { inviteUser } from "@/actions/admin/users/invite-user";
 
-const FormSchema = z.object({
-  name: z.string().min(3).max(50),
-  email: z.string().email(),
-  language: z
-    .string({
-      message: "Please select a user language.",
-    })
-    .min(2),
-});
-
 export function InviteForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const t = useTranslations("AdminPage");
 
-  const router = useRouter();
+  const FormSchema = z.object({
+    name: z.string().min(3, t("createUser.validation.nameMin")).max(50),
+    email: z.string().email(t("createUser.validation.emailInvalid")),
+    language: z
+      .string()
+      .min(2, t("inviteForm.validation.languageRequired")),
+  });
 
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      language: "en",
+    },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -113,15 +115,16 @@ export function InviteForm() {
           name="language"
           render={({ field }) => (
             <FormItem className="w-[250px]">
-              <FormLabel>Language</FormLabel>
+              <FormLabel>{t("inviteForm.language")}</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a user language" />
+                    <SelectValue placeholder={t("inviteForm.selectLanguage")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="vi">Tiếng Việt</SelectItem>
                   <SelectItem value="cz">Czech</SelectItem>
                 </SelectContent>
               </Select>
@@ -133,7 +136,7 @@ export function InviteForm() {
           {isLoading ? (
             <Icons.spinner className="animate-spin" />
           ) : (
-            "Invite user"
+            t("inviteForm.inviteButton")
           )}
         </Button>
       </form>

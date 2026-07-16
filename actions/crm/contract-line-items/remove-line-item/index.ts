@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { writeAuditLog } from "@/lib/audit-log";
@@ -38,7 +38,7 @@ export const removeContractLineItem = async (id: string) => {
       userId: session.user.id,
     });
 
-    revalidatePath("/[locale]/(routes)/crm/contracts/[contractId]", "page");
+    revalidatePath("/", "layout");
     return { data: { id } };
   } catch (error) {
     console.log("[REMOVE_CONTRACT_LINE_ITEM]", error);

@@ -12,8 +12,9 @@ type TargetList = {
 type Props = {
   initialData: { target_list_ids?: string[] };
   targetLists: TargetList[];
-  onNext: (data: { target_list_ids: string[] }) => void;
+  onNext: (data: { target_list_ids: string[] }) => Promise<void>;
   onBack: () => void;
+  isSubmitting?: boolean;
 };
 
 export function Step3Audience({
@@ -21,6 +22,7 @@ export function Step3Audience({
   targetLists,
   onNext,
   onBack,
+  isSubmitting,
 }: Props) {
   const [selected, setSelected] = useState<Set<string>>(
     new Set(initialData.target_list_ids ?? [])
@@ -93,7 +95,9 @@ export function Step3Audience({
         <Button variant="outline" onClick={onBack}>
           ← Back
         </Button>
-        <Button onClick={handleNext}>Next →</Button>
+        <Button onClick={handleNext} disabled={isSubmitting}>
+          {isSubmitting ? "Creating..." : "Create Campaign"}
+        </Button>
       </div>
     </div>
   );

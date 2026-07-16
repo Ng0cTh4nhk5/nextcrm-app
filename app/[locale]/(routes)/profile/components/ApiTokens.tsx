@@ -83,14 +83,14 @@ export function ApiTokens() {
       <CardHeader>
         <CardTitle>API Tokens</CardTitle>
         <CardDescription>
-          Generate tokens to connect AI agents via MCP. Token prefix: <code>nxtc__</code>
+          Generate tokens to connect AI agents via API. Token prefix: <code>nxtc__</code>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Generate form */}
         <div className="flex gap-2">
           <Input
-            placeholder="Token name (e.g. Claude Desktop)"
+            placeholder="Token name (e.g. Integration)"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="max-w-xs"

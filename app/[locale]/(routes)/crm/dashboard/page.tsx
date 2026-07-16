@@ -5,16 +5,18 @@ import CRMKanban from "./_components/CRMKanban";
 import { getOpportunities } from "@/actions/crm/get-opportunities";
 import { getAllCrmData } from "@/actions/crm/get-crm-data";
 import { serializeDecimalsList } from "@/lib/serialize-decimals";
+import { getTranslations } from "next-intl/server";
 
 const CrmDashboardPage = async () => {
   const salesStages = await getSaleStages();
   const opportunities = serializeDecimalsList(await getOpportunities());
   const crmData = await getAllCrmData();
+  const t = await getTranslations("CrmDashboardPage");
 
   return (
     <Container
-      title="CRM Dashboard"
-      description="In development. After this compoment is finished, there will be a optimistic update of the data."
+      title={t("title")}
+      description={t("description")}
     >
       <div className="w-full h-full  overflow-hidden">
         <CRMKanban

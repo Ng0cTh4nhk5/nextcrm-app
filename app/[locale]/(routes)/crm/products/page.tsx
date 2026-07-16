@@ -6,6 +6,7 @@ import { getProductsFull } from "@/actions/crm/products/get-products";
 import { getProductCategories } from "@/actions/crm/products/get-product-categories";
 import ProductsView from "../components/ProductsView";
 import { serializeDecimalsList } from "@/lib/serialize-decimals";
+import { getTranslations } from "next-intl/server";
 
 const ProductsPage = async () => {
   const [products, categories, crmData] = await Promise.all([
@@ -15,11 +16,12 @@ const ProductsPage = async () => {
   ]);
 
   const serializedProducts = serializeDecimalsList(products);
+  const t = await getTranslations("CrmPage");
 
   return (
     <Container
-      title="Products"
-      description="Manage your product and service catalog"
+      title={t("products.pageTitle")}
+      description={t("products.pageDescription")}
     >
       <Suspense fallback={<CrmTableSkeleton />}>
         <ProductsView

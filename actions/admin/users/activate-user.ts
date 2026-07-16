@@ -1,6 +1,5 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
-import sendEmail from "@/lib/sendmail";
 import { revalidatePath } from "next/cache";
 import {
   requireRole,
@@ -25,27 +24,7 @@ export const activateUser = async (userId: string) => {
       data: { userStatus: "ACTIVE" },
     });
 
-    let message;
-    switch (user.userLanguage) {
-      case "en":
-        message = `You account has been activated in ${process.env.NEXT_PUBLIC_APP_NAME} \n\n Your username is: ${user.email} \n\n Please login to ${process.env.NEXT_PUBLIC_APP_URL} \n\n Thank you \n\n ${process.env.NEXT_PUBLIC_APP_NAME}`;
-        break;
-      case "cz":
-        message = `Váš účet v aplikaci ${process.env.NEXT_PUBLIC_APP_NAME} byl aktivován. \n\n Vaše uživatelské jméno je: ${user.email} \n\n  Prosím přihlašte se na ${process.env.NEXT_PUBLIC_APP_URL} \n\n Děkujeme \n\n ${process.env.NEXT_PUBLIC_APP_NAME}`;
-        break;
-      default:
-        message = `You account has been activated in ${process.env.NEXT_PUBLIC_APP_NAME} \n\n Your username is: ${user.email} \n\n Please login to ${process.env.NEXT_PUBLIC_APP_URL} \n\n Thank you \n\n ${process.env.NEXT_PUBLIC_APP_NAME}`;
-        break;
-    }
-
-    await sendEmail({
-      from: process.env.EMAIL_FROM,
-      to: user.email,
-      subject: `Invitation to ${process.env.NEXT_PUBLIC_APP_NAME}`,
-      text: message,
-    });
-
-    revalidatePath("/[locale]/(routes)/admin", "page");
+    revalidatePath("/", "layout");
     return { data: user };
   } catch (error) {
     console.log("[ACTIVATE_USER]", error);

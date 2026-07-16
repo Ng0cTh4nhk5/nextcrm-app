@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { junctionTableHelpers } from "@/lib/junction-helpers";
 import { revalidatePath } from "next/cache";
@@ -35,7 +35,7 @@ export const watchProject = async (projectId: string) => {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[WATCH_PROJECT]", error);
@@ -72,7 +72,7 @@ export const unwatchProject = async (projectId: string) => {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[UNWATCH_PROJECT]", error);

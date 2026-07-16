@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -34,7 +34,7 @@ export const addComment = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/crm", "page");
+    revalidatePath("/", "layout");
     return { data: newComment };
   } catch (error) {
     console.log("[ADD_COMMENT]", error);

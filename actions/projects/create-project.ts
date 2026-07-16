@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAuthenticated, AuthenticationError } from "@/lib/authz";
@@ -45,7 +45,7 @@ export const createProject = async (data: {
       },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { data: newBoard };
   } catch (error) {
     console.log("[CREATE_PROJECT]", error);

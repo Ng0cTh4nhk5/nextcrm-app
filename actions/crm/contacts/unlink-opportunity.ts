@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -24,7 +24,7 @@ export const unlinkOpportunity = async (data: {
         },
       },
     });
-    revalidatePath("/[locale]/(routes)/crm/contacts", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[UNLINK_OPPORTUNITY]", error);

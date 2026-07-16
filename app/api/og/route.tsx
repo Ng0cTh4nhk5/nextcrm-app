@@ -2,8 +2,6 @@ import { ImageResponse } from "next/og";
 import { TbBrandNextjs, TbBrandTypescript } from "react-icons/tb";
 import { BiLogoMongodb, BiLogoTailwindCss } from "react-icons/bi";
 import { SiPrisma, SiReact, SiOpenai } from "react-icons/si";
-import fs from "fs";
-import path from "path";
 
 //export const runtime = "edge";
 

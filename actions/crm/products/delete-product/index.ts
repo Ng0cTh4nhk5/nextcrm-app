@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { writeAuditLog } from "@/lib/audit-log";
 import { revalidatePath } from "next/cache";
@@ -31,7 +31,7 @@ export const deleteProduct = async (id: string) => {
       userId: actor.id,
     });
 
-    revalidatePath("/[locale]/(routes)/crm/products", "page");
+    revalidatePath("/", "layout");
     return { data: { id } };
   } catch (error) {
     console.log("[DELETE_PRODUCT]", error);

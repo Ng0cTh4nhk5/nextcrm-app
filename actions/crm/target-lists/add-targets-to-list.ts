@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -19,7 +19,7 @@ export const addTargetsToList = async (targetListId: string, targetIds: string[]
       })),
       skipDuplicates: true,
     });
-    revalidatePath("/[locale]/(routes)/crm/target-lists", "page");
+    revalidatePath("/", "layout");
     return { added: result.count };
   } catch (error) {
     return { error: "Failed to add targets to list" };

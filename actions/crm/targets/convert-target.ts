@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -75,8 +75,8 @@ export async function convertTarget(
       return [acct, ctct];
     });
 
-    revalidatePath("/[locale]/(routes)/campaigns/targets", "page");
-    revalidatePath("/[locale]/(routes)/crm/accounts", "page");
+    revalidatePath("/", "layout");
+    revalidatePath("/", "layout");
 
     return { accountId: account.id, contactId: contact.id };
   } catch (error) {

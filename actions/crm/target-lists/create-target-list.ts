@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { getSession } from "@/lib/auth-server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -26,7 +26,7 @@ export const createTargetList = async (data: {
       },
       include: { targets: true },
     });
-    revalidatePath("/[locale]/(routes)/crm/target-lists", "page");
+    revalidatePath("/", "layout");
     return { data: list };
   } catch (error) {
     return { error: "Failed to create target list" };

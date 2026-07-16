@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { prismadb } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import {
@@ -32,7 +32,7 @@ export const deleteProject = async (projectId: string) => {
       data: { deletedAt: new Date(), deletedBy: user.id },
     });
 
-    revalidatePath("/[locale]/(routes)/projects", "page");
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.log("[DELETE_PROJECT]", error);
