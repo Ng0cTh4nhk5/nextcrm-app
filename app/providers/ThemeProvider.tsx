@@ -10,7 +10,7 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       {...props}
-      scriptProps={{ suppressHydrationWarning: true } as React.ScriptHTMLAttributes<HTMLScriptElement>}
+      scriptProps={{ suppressHydrationWarning: true }}
     >
       {children}
     </NextThemesProvider>
