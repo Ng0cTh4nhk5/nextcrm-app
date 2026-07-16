@@ -11,12 +11,11 @@ const websiteUrl = process.env.NEXT_PUBLIC_APP_URL;
 
 export async function GET(request: Request) {
   try {
-    const interExtrabold = fs.readFileSync(
-      path.resolve("./public/fonts/Inter-Bold.ttf")
-    );
-    /*     const interExtrabold = fetch(
+    // Use fetch with import.meta.url for reliable font loading on Vercel
+    const interExtraboldRes = await fetch(
       new URL("../../../public/Inter-Bold.ttf", import.meta.url)
-    ).then((res) => res.arrayBuffer()); */
+    );
+    const interExtrabold = await interExtraboldRes.arrayBuffer();
     const { searchParams } = new URL(request.url);
 
     const hasTitle = searchParams.has("title");

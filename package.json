@@ -200,8 +200,6 @@
       "@prisma/engines",
       "@swc/core",
       "aws-crt",
-      "bcrypt",
-      "canvas",
       "esbuild",
       "msgpackr-extract",
       "msw",
