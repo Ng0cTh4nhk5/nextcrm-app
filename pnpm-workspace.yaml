@@ -47,9 +47,24 @@ onlyBuiltDependencies:
   - "@prisma/engines"
   - "@swc/core"
   - "aws-crt"
+  - "canvas"
   - "esbuild"
   - "msgpackr-extract"
   - "msw"
   - "prisma"
+  - "protobufjs"
   - "sharp"
   - "unrs-resolver"
+
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  '@prisma/engines': set this to true or false
+  '@swc/core': set this to true or false
+  aws-crt: set this to true or false
+  canvas: set this to true or false
+  esbuild: set this to true or false
+  msw: set this to true or false
+  prisma: set this to true or false
+  protobufjs: set this to true or false
+  sharp: set this to true or false
+  unrs-resolver: set this to true or false
