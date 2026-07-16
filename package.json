@@ -183,13 +183,15 @@
       "@swc/core",
       "aws-crt",
       "bcrypt",
-      "canvas",
       "esbuild",
       "msgpackr-extract",
       "msw",
       "prisma",
       "sharp",
       "unrs-resolver"
+    ],
+    "neverBuiltDependencies": [
+      "canvas"
     ]
   }
 }
