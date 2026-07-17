@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { seedCurrencies } from "./prisma/seeds/currencies.js"; // Needs to be compiled or run with tsx
+import { seedCurrencies } from "../prisma/seeds/currencies.js"; // Needs to be compiled or run with tsx
 
 const prisma = new PrismaClient();
 
